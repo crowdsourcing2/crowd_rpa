@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "crowd-rpa"
+version = "0.1.0"
+description = ""
+authors = ["wd Yang <wdyang97@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+selenium = "^4.17.2"
+undetected-chromedriver = "^3.5.4"
+selenium-stealth = "^1.0.6"
+webdriver-manager = "^4.0.1"
+colorlog = "^6.8.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
