@@ -4,6 +4,7 @@ from settings import cfg
 
 
 class MisaConstant:
+
     DOWNLOAD_BTN_BY_CLASS_TYPE = 'download-invoice'
     DOWNLOAD_PDF_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div'
     DOWNLOAD_XML_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div[2]'

@@ -53,6 +53,7 @@ class MisaRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Download XML')
         download_xml = browser.find_element(By.XPATH, misa_constant.DOWNLOAD_XML_XPATH)
         download_xml.click()
+        time.sleep(3)
         browser.quit()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
 
