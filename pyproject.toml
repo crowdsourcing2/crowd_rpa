@@ -12,7 +12,8 @@ undetected-chromedriver = "^3.5.4"
 selenium-stealth = "^1.0.6"
 webdriver-manager = "^4.0.1"
 colorlog = "^6.8.0"
-
+opencv-python = "^4.9.0.80"
+easyocr = "^1.7.1"
 
 [build-system]
 requires = ["poetry-core"]

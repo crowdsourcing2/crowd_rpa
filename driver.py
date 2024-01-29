@@ -68,7 +68,8 @@ class WebDriver:
         if not pathlib.Path(cfg.STORAGE_PATH).is_dir():
             os.mkdir(cfg.STORAGE_PATH)
 
-        prefs = {"download.default_directory": cfg.STORAGE_PATH}
+        prefs = {"download.default_directory": cfg.STORAGE_PATH, "safebrowsing.enabled": "false",
+                 "safebrowsing.disable_download_protection": "true"}
         chrome_options.add_experimental_option("prefs", prefs)
 
         driver = webdriver.Chrome(options=chrome_options)
