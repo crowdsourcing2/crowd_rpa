@@ -1,5 +1,3 @@
-import os
-import pathlib
 import time
 import logging
 from abc import ABC
@@ -55,6 +53,15 @@ class MisaRpa(IRpa, ABC):
         download_xml.click()
         browser.quit()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
+
+    def versions(self) -> dict:
+        return misa_constant.VERSIONS
+
+    def get_latest_version(self) -> dict:
+        return {
+            'version': misa_constant.LATEST_VERSION,
+            'info': misa_constant.VERSIONS[misa_constant.LATEST_VERSION]
+        }
 
 
 if __name__ == '__main__':
