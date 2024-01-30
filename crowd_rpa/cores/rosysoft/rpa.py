@@ -79,6 +79,15 @@ class RosySoftRpa(IRpa, ABC):
         browser.quit()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
 
+    def versions(self) -> dict:
+        return rosysoft_constant.VERSIONS
+
+    def get_latest_version(self) -> dict:
+        return {
+            'version': rosysoft_constant.LATEST_VERSION,
+            'info': rosysoft_constant.VERSIONS[rosysoft_constant.LATEST_VERSION]
+        }
+
 
 if __name__ == '__main__':
     rosy_rpa_ins = RosySoftRpa(rosysoft_constant.META_DATA)
