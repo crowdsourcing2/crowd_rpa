@@ -26,6 +26,20 @@ class IRpa:
     def get_driver(self):
         raise NotImplementedError
 
+    @abstractmethod
+    def versions(self) -> dict:
+        """
+        return: JSON version group by version. ex: {'v1': {'url': 'link', 'Supplier': 'misa'}
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_latest_version(self) -> dict:
+        """
+        return: latest version
+        """
+        raise NotImplementedError
+
     def get_name(self):
         return self.name
 
