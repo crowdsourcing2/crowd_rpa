@@ -1,16 +1,18 @@
-import re
-import cv2
-import time
 import logging
+import re
+import time
+from abc import ABC
+from io import BytesIO
+
+import cv2
 import easyocr
 import numpy as np
-from abc import ABC
 from PIL import Image
-from io import BytesIO
-from driver import WebDriver
 from selenium.webdriver.common.by import By
-from crowd_rpa.interfaces.rpa_interface import IRpa
+
 from crowd_rpa.cores.digiworld.constant import digi_world_constant
+from crowd_rpa.interfaces.rpa_interface import IRpa
+from driver import WebDriver
 
 
 class DigiWorldRpa(IRpa, ABC):
@@ -30,11 +32,13 @@ class DigiWorldRpa(IRpa, ABC):
         # TODO: you must be code here!
         return digi_world_constant.META_DATA['URL']
 
-    def enter_captcha(self, browser):
+    @staticmethod
+    def enter_captcha(name, browser, captcha_find_by, input_result_captcha_by, captcha_image, input_result_captcha,
+                      submit_find_by, value_submit, result_captcha_by, value_result_captcha):
         retry = 0
         while retry < digi_world_constant.RETRY_MAX:
-            logging.info(f'{self.get_name()}: Enter captcha')
-            captcha_img = browser.find_element(By.CLASS_NAME, digi_world_constant.CAPTCHA_IMG_BY_CLASS_TYPE)
+            logging.info(f'{name}: Enter captcha')
+            captcha_img = browser.find_element(captcha_find_by, captcha_image)
             # Get the <img> tag's container
             img_location = captcha_img.location
             img_size = captcha_img.size
@@ -59,19 +63,20 @@ class DigiWorldRpa(IRpa, ABC):
                 captcha_text = results[0][1]
                 captcha_text = re.sub(r'[^0-9]', '', captcha_text)
             except Exception as e:
-                logging.info(f'{self.get_name()}: {e}')
-            captcha_input = browser.find_element(By.ID, digi_world_constant.CAPTCHA_INPUT_BY_ID_TYPE)
+                logging.info(f'{name}: {e}')
+            captcha_input = browser.find_element(input_result_captcha_by, input_result_captcha)
             captcha_input.clear()
             captcha_input.send_keys(captcha_text)
             # Form submit
-            logging.info(f'{self.get_name()}: Form submit')
-            form = browser.find_element(By.ID, digi_world_constant.FORM_BY_ID_TYPE)
+            logging.info(f'{name}: Form submit')
+            time.sleep(1)
+            form = browser.find_element(submit_find_by, value_submit)
             form.submit()
-            logging.info(f'{self.get_name()}: Please wait .. ({digi_world_constant.DELAY_TIME_SKIP}s)')
+            logging.info(f'{name}: Please wait .. ({digi_world_constant.DELAY_TIME_SKIP}s)')
             time.sleep(digi_world_constant.DELAY_TIME_SKIP)
             # Check error captcha
             try:
-                browser.find_element(By.XPATH, digi_world_constant.ERROR_ALERT_BY_XPATH)
+                browser.find_element(result_captcha_by, value_result_captcha)
                 retry += 1
             except Exception as e:
                 break
@@ -93,7 +98,10 @@ class DigiWorldRpa(IRpa, ABC):
         id_input.send_keys(digi_world_constant.ID)
         logging.info(f'{self.get_name()}: Enter id')
         # Enter captcha
-        self.enter_captcha(browser)
+        self.enter_captcha(self.get_name(), browser, By.CLASS_NAME, By.ID,
+                           digi_world_constant.CAPTCHA_IMG_BY_CLASS_TYPE, digi_world_constant.CAPTCHA_INPUT_BY_ID_TYPE,
+                           By.ID, digi_world_constant.FORM_BY_ID_TYPE, By.XPATH,
+                           digi_world_constant.ERROR_ALERT_BY_XPATH)
         # Open view detail
         logging.info(f'{self.get_name()}: Open view detail')
         view_btn = browser.find_element(By.XPATH, digi_world_constant.VIEW_BTN_BY_XPATH)
@@ -118,6 +126,7 @@ class DigiWorldRpa(IRpa, ABC):
             'version': digi_world_constant.LATEST_VERSION,
             'info': digi_world_constant.VERSIONS[digi_world_constant.LATEST_VERSION]
         }
+
 
 if __name__ == '__main__':
     digi_world_rpa_ins = DigiWorldRpa(digi_world_constant.META_DATA)
