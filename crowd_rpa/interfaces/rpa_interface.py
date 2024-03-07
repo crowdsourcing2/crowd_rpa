@@ -15,7 +15,15 @@ class IRpa:
         self.driver_name = None
 
     @abstractmethod
+    def get_portal(self):
+        raise NotImplementedError
+
+    @abstractmethod
     def get_code_lookup(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def check_invoice(self):
         raise NotImplementedError
 
     @abstractmethod
