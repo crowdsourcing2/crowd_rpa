@@ -22,7 +22,6 @@ class DigiWorldRpa(IRpa, ABC):
         elif path.endswith(".xml"):
             url = util_rpa.read_xml(path, digi_world_constant.URL_KEYWORD)
 
-        print(url)
         return url
 
     def get_code_lookup(self):
