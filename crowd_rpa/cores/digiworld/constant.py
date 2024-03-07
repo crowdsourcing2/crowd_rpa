@@ -4,6 +4,13 @@ from settings import cfg
 
 
 class DigiWorldConstant:
+    FILE_PATH = './RPA_TEMP/digiworld.pdf'
+    # URL_KEYWORD = 'PortalLink'  # tag name contains data
+    URL_KEYWORD = 'Hóa Đơn Điện Tử tra cứu tại website :'
+    # CODE_BILL_KEYWORD = 'Fkey'
+    CODE_BILL_KEYWORD = '- Mã nhận hóa đơn :'
+    LAST_KEYWORD = 'Đơn vị cung cấp giải pháp hóa đơn điện tử:'
+
     FORM_BY_ID_TYPE = 'Searchform'
     ID_INPUT_BY_ID_TYPE = 'strFkey'
     CAPTCHA_IMG_BY_CLASS_TYPE = 'captcha_img'
@@ -11,8 +18,7 @@ class DigiWorldConstant:
     ERROR_ALERT_BY_XPATH = '//*[@id="messagewrapper"]/div'
     VIEW_BTN_BY_XPATH = '//*[@class="table"]/tbody/tr/td[10]/a'
     DOWNLOAD_BTN_BY_NAME_TYPE = 'down'
-    URL = 'https://hddt78.digiworld.com.vn'
-    ID = '13231232184PD2B'
+    URL = None
     CORE_NAME = 'CORES.DIGIWORLD.RPA'
     META_DATA = {
         'URL': URL,
@@ -31,5 +37,6 @@ class DigiWorldConstant:
     DELAY_TIME_SKIP = 1
     DELAY_CLICK_DOWNLOAD_EVERY_FILE = 2
     RETRY_MAX = 5
+
 
 digi_world_constant = DigiWorldConstant()
