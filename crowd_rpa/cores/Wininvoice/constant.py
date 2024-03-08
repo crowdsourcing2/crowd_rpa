@@ -4,10 +4,19 @@ from settings import cfg
 
 
 class WininvoiceConstant:
+    #ADD
+    FILE_PATH = './RPA_TEMP/Wininvoice.pdf'
+    # URL_KEYWORD = 'PortalLink'  # tag name contains data
+    URL_KEYWORD = 'tra cứu trực tuyến tại'
+    # CODE_BILL_KEYWORD = 'Fkey'
+    CODE_BILL_KEYWORD = ' , mã tra cứu: '
+    CITY_CODE_KEYWORD = ' , mã công ty: '
+    LAST_KEYWORD = '  )'
+
     DOWNLOAD_BTN_BY_CLASS_TYPE = "//body/div[1]/a[1]"
     DOWNLOAD_PDF_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div'
     DOWNLOAD_XML_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div[2]'
-    URL = 'https://tracuu.wininvoice.vn/'
+    URL = None
     CORE_NAME = 'CORES.WININVOICE.RPA'
     META_DATA = {
         'URL': URL,
