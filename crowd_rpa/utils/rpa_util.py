@@ -49,7 +49,7 @@ class UtilRpa:
     @staticmethod
     def enter_captcha(name, browser, captcha_find_by, input_result_captcha_by, captcha_image, input_result_captcha,
                       submit_find_by, value_submit, result_captcha_by, value_result_captcha, retry_max, delay_time_skip,
-                      check_num=False):
+                      check_num=False, callback=None, callback_args=None, form_btn_handle="submit"):
         retry = 0
         while retry < retry_max:
             logging.info(f'{name}: Enter captcha')
@@ -86,14 +86,20 @@ class UtilRpa:
             # Form submit
             logging.info(f'{name}: Form submit')
             time.sleep(1)
-            form = browser.find_element(submit_find_by, value_submit)
-            form.submit()
+            form_btn = browser.find_element(submit_find_by, value_submit)
+            if form_btn_handle.lower() == "submit":
+                form_btn.submit()
+            elif form_btn_handle.lower() == "click":
+                form_btn.click()
+
             logging.info(f'{name}: Please wait .. ({delay_time_skip}s)')
             time.sleep(delay_time_skip)
             # Check error captcha
             try:
                 browser.find_element(result_captcha_by, value_result_captcha)
                 retry += 1
+                if callback is not None:
+                    callback(*callback_args)
             except Exception as e:
                 break
 
