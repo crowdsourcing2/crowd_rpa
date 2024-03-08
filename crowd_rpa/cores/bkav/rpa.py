@@ -2,6 +2,9 @@
 import time
 import logging
 from abc import ABC
+
+import PyPDF2
+import re
 from driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
@@ -22,11 +25,72 @@ class BkavRpa(IRpa, ABC):
     def get_name(self):
         return bkav_constant.META_DATA['RPA_NAME']
 
+    def get_portal(self):
+        urls = self.read_pdf()
+        if urls:
+            return urls[0]
+        else:
+            print("Khoong tim thay duong dan")
+            return ""
+
     def get_code_lookup(self):
-        # TODO: you must be code here!
-        return bkav_constant.META_DATA['URL']
+        code = self.read_look_code()
+        return code
+
+    def read_look_code(self):
+        codes = []
+        try:
+            with open(bkav_constant.PATH_PDF_FILE, 'rb') as file:
+                pdf_reader = PyPDF2.PdfReader(file)
+                for page_num in range(len(pdf_reader.pages)):
+                    text = pdf_reader.pages[page_num].extract_text()
+                    start_index = text.find("Mã tra cứu HĐĐT này:")
+                    if start_index != -1:
+                        # Cắt văn bản từ vị trí "Mã tra cứu HĐĐT này:" đến hết văn bản
+                        relevant_text = text[start_index + len("Mã tra cứu HĐĐT này:"):].strip()
+                        code_matches = re.findall(r'[A-Za-z0-9]+', relevant_text)
+                        if code_matches:
+                            last_code = code_matches[0]
+                            if last_code.endswith('M'):
+                                last_code = last_code[:-1]
+                            codes.append(last_code)
+
+        except FileNotFoundError:
+            print(f"Lỗi: Không tìm thấy tệp - {bkav_constant.PATH_PDF_FILE}")
+        except Exception as e:
+            print(f"Có lỗi xảy ra: {e}")
+        return codes
+
+    def read_pdf(self):
+        links = []
+        try:
+            with open(bkav_constant.PATH_PDF_FILE, 'rb') as file:
+                pdf_reader = PyPDF2.PdfReader(file)
+
+                for page_num in range(len(pdf_reader.pages)):
+                    text = pdf_reader.pages[page_num].extract_text()
+                    # Tìm vị trí của chuỗi "Hóa đơn Điện tử (HĐĐT)"
+                    start_index = text.find("Hóa đơn Điện tử (HĐĐT)")
+
+                    if start_index != -1:
+                        # Cắt văn bản từ vị trí "Hóa đơn Điện tử (HĐĐT)" đến hết văn bản
+                        relevant_text = text[start_index:]
+
+                        # Sử dụng biểu thức chính quy để tìm các đường link
+                        link_matches = re.findall(
+                            r'https?://(?:[a-zA-Z]|\d|[$-_@.&+]|[!*\\(),]|%[0-9a-fA-F][0-9a-fA-F])+',
+                            relevant_text)
+                        cleaned_links = [link.rstrip('.') for link in link_matches]
+                        links.extend(cleaned_links)
+
+        except FileNotFoundError:
+            print(f"Lỗi: Không tìm thấy tệp - {bkav_constant.PATH_PDF_FILE}")
+        except Exception as e:
+            print(f"Có lỗi xảy ra: {e}")
+        return links
 
     def process_download_xml_pdf(self):
+
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
         # Maximize the browser window to full screen
         browser = self.get_driver()
@@ -34,16 +98,16 @@ class BkavRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Please wait .. ({bkav_constant.DELAY_OPEN_MAXIMUM_BROWSER}s)')
         time.sleep(bkav_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         # Open a website
-        browser.get(self.get_code_lookup())
-        logging.info(f'{self.get_name()}: Open a website: {self.get_code_lookup()}')
+        browser.get(self.get_portal())
+        logging.info(f'{self.get_name()}: Open a website: {self.get_portal()}')
         time.sleep(bkav_constant.DELAY_TIME_LOAD_PAGE)
         logging.info(f'{self.get_name()}: Please wait .. ({bkav_constant.DELAY_TIME_LOAD_PAGE}s)')
         #Enter lookup code
         logging.info(f'{self.get_name()}: Enter lookup code')
         input_id = browser.find_element(By.CLASS_NAME, bkav_constant.INPUT_ID)
-        input_id.send_keys("Y88TPVQF501")
-        btnSearch = browser.find_element(By.ID, bkav_constant.BUTTON_SEARCH_BY_ID)
-        btnSearch.click()
+        input_id.send_keys(self.get_code_lookup())
+        btn_search = browser.find_element(By.ID, bkav_constant.BUTTON_SEARCH_BY_ID)
+        btn_search.click()
         time.sleep(bkav_constant.DELAY_TIME_LOAD_PAGE)
         try:
             iframe = browser.find_element(By.ID, bkav_constant.IFRAME_BY_ID)

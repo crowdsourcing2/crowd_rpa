@@ -4,12 +4,13 @@ from settings import cfg
 
 class BkavConstant:
     IFRAME_BY_ID = 'frameViewInvoice'
+    PATH_PDF_FILE ='./RPA_TEMP/BKAV.pdf'
     INPUT_ID ='form-control'
     BUTTON_SEARCH_BY_ID = 'Button1'
     MENU_DOWNLOAD_BY_XPATH = '//*[@id="divDownloads"]/ul'
     DOWNLOAD_PDF_XPATH = '//*[@id="LinkDownPDF"]'
     DOWNLOAD_XML_XPATH = '//*[@id="LinkDownXML"]'
-    URL = 'https://tchd.ehoadon.vn/TCHD?MTC='
+    URL = None
     CORE_NAME = 'CORES.BKAV.RPA'
     META_DATA = {
         'URL': URL,
