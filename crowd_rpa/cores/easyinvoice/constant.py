@@ -4,6 +4,13 @@ from settings import cfg
 
 
 class EasyInvoiceConstant:
+    FILE_PATH = './RPA_TEMP/easyinvoice.xml'
+    URL_KEYWORD = 'PortalLink'  # tag name contains data
+    # URL_KEYWORD = 'Trang tra cứu:'
+    CODE_BILL_KEYWORD = 'Key'
+    # CODE_BILL_KEYWORD = 'Mã tra cứu:'
+    # LAST_KEYWORD = '(Cần kiểm tra, đối chiếu khi lập, giao, nhận hóa đơn)'
+
     FORM_BY_ID_TYPE = 'Search'
     ID_INPUT_BY_ID_TYPE = 'iFkey'
     CAPTCHA_IMG_BY_ID_TYPE = 'captcha'
@@ -12,9 +19,8 @@ class EasyInvoiceConstant:
     CONFIRM_BTN_BY_CLASS_TYPE = 'sa-confirm-button-container'
     DOWNLOAD_PDF_XPATH = '//*[@id="invoice-footer"]/div/button[2]'
     DOWNLOAD_XML_XPATH = '//*[@id="invoice-footer"]/div/button[5]'
-    URL = 'https://0401356807hd.easyinvoice.com.vn/'
+    URL = None
     SETTING_SECURITY = 'chrome://settings/security'
-    ID = 'V6B3X7S70412674213298690'
     CORE_NAME = 'CORES.EASYINVOICE.RPA'
     META_DATA = {
         'URL': URL,
