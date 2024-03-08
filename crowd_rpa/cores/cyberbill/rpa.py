@@ -7,8 +7,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from crowd_rpa.cores.cyberbill.constant import cyberbill_constant
-from crowd_rpa.cores.digiworld.rpa import DigiWorldRpa
 from crowd_rpa.interfaces.rpa_interface import IRpa
+from crowd_rpa.utils.rpa_util import util_rpa
 from driver import WebDriver
 
 
@@ -46,11 +46,11 @@ class CyberbillRpa(IRpa, ABC):
         input_id = wait.until(EC.visibility_of_element_located((By.NAME, cyberbill_constant.INPUT_ID_BY_NAME)))
         input_id.send_keys("2E2EYBV8S3AG")
         # Enter captcha
-        DigiWorldRpa.enter_captcha(self.get_name(), browser, By.XPATH, By.XPATH,
+        util_rpa.enter_captcha(self.get_name(), browser, By.XPATH, By.XPATH,
                                    cyberbill_constant.CAPTCHA_IMG_BY_XPATH,
                                    cyberbill_constant.CAPTCHA_INPUT_BY_XPATH, By.XPATH,
                                    cyberbill_constant.BUTTON_SEARCH_BY_XPATH, By.CLASS_NAME,
-                                   cyberbill_constant.ERROR_ALERT_BY_CLASS)
+                                   cyberbill_constant.ERROR_ALERT_BY_CLASS, cyberbill_constant.RETRY_MAX, cyberbill_constant.DELAY_TIME_SKIP, check_num=True)
         time.sleep(cyberbill_constant.DELAY_TIME_SKIP)
         logging.info(f'{self.get_name()}: Download PDF')
         download_pdf = browser.find_element(By.XPATH, cyberbill_constant.DOWNLOAD_PDF_XPATH)
