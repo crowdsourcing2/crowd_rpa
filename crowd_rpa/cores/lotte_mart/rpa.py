@@ -7,6 +7,8 @@ import numpy as np
 from abc import ABC
 from PIL import Image
 from io import BytesIO
+
+from crowd_rpa.utils.rpa_util import util_rpa
 from driver import WebDriver
 from selenium.webdriver.common.by import By
 
@@ -18,6 +20,30 @@ class LotteMartRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
 
+    def get_portal(self):
+        url = ""
+        path = lottemart_constant.FILE_PATH
+        if path.endswith(".pdf"):
+            url = util_rpa.read_pdf(path, lottemart_constant.URL_KEYWORD,
+                                    lottemart_constant.CODE_BILL_KEYWORD)
+        elif path.endswith(".xml"):
+            url = util_rpa.read_xml(path, lottemart_constant.URL_KEYWORD)
+
+        return url
+
+    def get_code_lookup(self):
+        code_bill = ""
+        path = lottemart_constant.FILE_PATH
+        if path.endswith(".pdf"):
+            code_bill = util_rpa.read_pdf(path, lottemart_constant.CODE_BILL_KEYWORD,
+                                          lottemart_constant.LAST_KEYWORD)
+        elif path.endswith(".xml"):
+            code_bill = util_rpa.read_xml(path, lottemart_constant.CODE_BILL_KEYWORD)
+        return code_bill
+
+    def check_invoice(self):
+        return None
+
     def extract_data(self):
         self.process_download_xml_pdf()
 
@@ -27,52 +53,10 @@ class LotteMartRpa(IRpa, ABC):
     def get_name(self):
         return lottemart_constant.META_DATA['RPA_NAME']
 
-    def get_code_lookup(self):
-        # TODO: you must be code here!
-        return '01005_20231103_18'
-
-    def bypass_captcha2(self, browser):
-        retry = 0
-        while retry < lottemart_constant.RETRY_MAX:
-            logging.info(f'{self.get_name()}: Enter captcha')
-            captcha_img = browser.find_element(By.CLASS_NAME, 'captcha_img')
-            # Get the <img> tag's container
-            img_location = captcha_img.location
-            img_size = captcha_img.size
-            # Get all photos of the website
-            screenshot = browser.get_screenshot_as_png()
-            # Use Pillow to crop and save the image according to the <img> tag's container
-            image = Image.open(BytesIO(screenshot))
-            cropped_image_captcha = image.crop((img_location['x'], img_location['y'], img_location['x'] + img_size['width'],
-                                        img_location['y'] + img_size['height']))
-            # Image to text
-            captcha_text = ""
-            try:
-                cropped_image_captcha_np = np.array(cropped_image_captcha)
-                gray_image = cv2.cvtColor(cropped_image_captcha_np, cv2.COLOR_BGR2GRAY)
-                blurred_image = cv2.GaussianBlur(gray_image, (1, 1), 1)
-                unsharp_mask = cv2.addWeighted(gray_image, 11, blurred_image, -10, 0)
-                blurred_image = cv2.GaussianBlur(unsharp_mask, (5, 5), 0)
-                reader = easyocr.Reader(['en'])
-                results = reader.readtext(blurred_image)
-                captcha_text = results[0][1]
-            except Exception as e:
-                logging.info(f'{self.get_name()}: {e}')
-            text_box_captcha = browser.find_element(By.ID, lottemart_constant.TEXT_BOX_CAPTCHA_BY_ID)
-            text_box_captcha.clear()
-            text_box_captcha.send_keys(captcha_text)
-            # Form submit
-            logging.info(f'{self.get_name()}: Form submit')
-            form = browser.find_element(By.ID, 'Searchform')
-            form.submit()
-            logging.info(f'{self.get_name()}: Please wait .. ({lottemart_constant.DELAY_TIME_SKIP}s)')
-            time.sleep(lottemart_constant.DELAY_TIME_SKIP)
-            # Check error captcha
-            try:
-                browser.find_element(By.XPATH, lottemart_constant.ERROR_ALERT_BY_XPATH)
-                retry += 1
-            except Exception as e:
-                break
+    def enter_id(self, browser):
+        text_box = browser.find_element(By.CLASS_NAME, lottemart_constant.TEXT_BOX_BY_CLASS_TYPE)
+        text_box.send_keys(self.get_code_lookup())
+        logging.info(f'{self.get_name()}: Enter code lookup: {self.get_code_lookup()}')
 
     def process_download_xml_pdf(self):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
@@ -80,15 +64,19 @@ class LotteMartRpa(IRpa, ABC):
         browser.maximize_window()
         logging.info(f'{self.get_name()}: Please wait .. ({lottemart_constant.DELAY_OPEN_MAXIMUM_BROWSER}s)')
         time.sleep(lottemart_constant.DELAY_OPEN_MAXIMUM_BROWSER)
-        logging.info(f'{self.get_name()}: Open a website: {lottemart_constant.URL}')
-        browser.get(lottemart_constant.META_DATA['URL'])
+        logging.info(f'{self.get_name()}: Open a website: {self.get_portal()}')
+        browser.get(self.get_portal())
         logging.info(f'{self.get_name()}: Please wait .. ({lottemart_constant.DELAY_TIME_LOAD_PAGE}s)')
         time.sleep(lottemart_constant.DELAY_TIME_LOAD_PAGE)
 
-        text_box = browser.find_element(By.CLASS_NAME, lottemart_constant.TEXT_BOX_BY_CLASS_TYPE)
-        text_box.send_keys(self.get_code_lookup())
-        logging.info(f'{self.get_name()}: Enter code lookup: {self.get_code_lookup()}')
-        self.bypass_captcha2(browser)
+        self.enter_id(browser)
+        util_rpa.enter_captcha(self.get_name(), browser, By.CLASS_NAME, By.ID,
+                               lottemart_constant.IMG_CAPTCHA_BY_CLASS_TYPE,
+                               lottemart_constant.TEXT_BOX_CAPTCHA_BY_ID,
+                               By.ID, lottemart_constant.FORM_BY_ID_TYPE, By.XPATH,
+                               lottemart_constant.ERROR_ALERT_BY_XPATH, lottemart_constant.RETRY_MAX,
+                               lottemart_constant.DELAY_TIME_SKIP, check_num=True, callback=self.enter_id,
+                               callback_args=[browser])
 
         logging.info(f'{self.get_name()}: Download pdf')
         pdf_download = browser.find_element(By.XPATH, lottemart_constant.DOWNLOAD_PDF_BY_XPATH)
