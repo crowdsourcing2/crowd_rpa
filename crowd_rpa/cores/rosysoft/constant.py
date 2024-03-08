@@ -1,11 +1,21 @@
 class RosySoftConstant:
-    TAB2_BUTTON_BY_CLASS_TYPE = 'tab2'
+    FILE_PATH = './RPA_TEMP/rosysoft.pdf'
+    # URL_KEYWORD = 'PortalLink'  # tag name contains data
+    URL_KEYWORD = 'Trang tra cứu:'
+    # CODE_BILL_KEYWORD = 'Key'
+    CODE_BILL_KEYWORD = 'Mã tra cứu:'
+    LAST_KEYWORD = '(Cần kiểm tra, đối chiếu khi lập, giao nhận hóa đơn)'
+
+    TAX_CODE_KEYWORD = 'Mã số thuế(Tax code):'
+    LAST_TAXT_KEYWORD = 'Địa chỉ(Address):'
+
+    TAB2_BUTTON_BY_ID_TYPE = 'tab2'
     TEXT_TAXCODE_BY_ID_TYPE = 'txtTaxCode2'
     TEXT_SEARCH_CODE_BY_ID_TYPE = 'txtInvID'
     SUBMIT_BTN_BY_ID_TYPE = '#content2 #btnSubmit'
     DOWNLOAD_PDF_XPATH = '//*[@class="row-fluid"]/div/div/article/div/div/div[2]/table/tbody/tr/td[2]/div/span[1]/img'
     DOWNLOAD_XML_XPATH = '//*[@class="row-fluid"]/div/div/article/div/div/div[2]/table/tbody/tr/td[2]/div/span[3]/img'
-    URL = 'https://einv.rosysoft.vn:8386/Account/LogIn?ReturnUrl=%2f'
+    URL = None
     URL_N = 'https://einv.rosysoft.vn:8386/RSeInvoiceSearch'
     CORE_NAME = 'CORES.ROSY_SOFT.RPA'
     META_DATA = {

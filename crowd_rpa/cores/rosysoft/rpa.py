@@ -1,6 +1,9 @@
 import logging
+import re
 import time
 from abc import ABC
+
+from crowd_rpa.utils.rpa_util import util_rpa
 from driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
@@ -11,6 +14,38 @@ class RosySoftRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
 
+    def get_portal(self):
+        url = ""
+        path = rosysoft_constant.FILE_PATH
+        if path.endswith(".pdf"):
+            url = util_rpa.read_pdf(path, rosysoft_constant.URL_KEYWORD,
+                                    rosysoft_constant.CODE_BILL_KEYWORD)
+        elif path.endswith(".xml"):
+            url = util_rpa.read_xml(path, rosysoft_constant.URL_KEYWORD)
+        print(url)
+        return url
+
+    def get_code_lookup(self):
+        code_bill = ""
+        path = rosysoft_constant.FILE_PATH
+        if path.endswith(".pdf"):
+            code_bill = util_rpa.read_pdf(path, rosysoft_constant.CODE_BILL_KEYWORD,
+                                          rosysoft_constant.LAST_KEYWORD)
+        elif path.endswith(".xml"):
+            code_bill = util_rpa.read_xml(path, rosysoft_constant.CODE_BILL_KEYWORD)
+        return code_bill
+
+    def check_invoice(self):
+        taxt_code = ""
+        path = rosysoft_constant.FILE_PATH
+        if path.endswith(".pdf"):
+            taxt_code = util_rpa.read_pdf(path, rosysoft_constant.TAX_CODE_KEYWORD,
+                                          rosysoft_constant.LAST_TAXT_KEYWORD)
+        elif path.endswith(".xml"):
+            taxt_code = util_rpa.read_xml(path, rosysoft_constant.TAX_CODE_KEYWORD)
+        taxt_code = taxt_code.replace(' ', '')
+        return taxt_code
+
     def extract_data(self):
         self.process_download_xml_pdf()
 
@@ -20,36 +55,32 @@ class RosySoftRpa(IRpa, ABC):
     def get_name(self):
         return rosysoft_constant.META_DATA['RPA_NAME']
 
-    def get_code_lookup(self):
-        # TODO: you must be code here!
-        return {'tax_code': '0302035520', 'lookup_code': 'A01TXL000630801'}
-
     def process_download_xml_pdf(self):
         logging.info(f'{self.get_name()}: Start process download xml & pdf.')
 
         browser = self.get_driver()
         browser.maximize_window()
-        browser.get(rosysoft_constant.META_DATA['URL'])
         logging.info(f'{self.get_name()}: Please wait .. ({rosysoft_constant.DELAY_OPEN_MAXIMUM_BROWSER}s)')
         time.sleep(rosysoft_constant.DELAY_OPEN_MAXIMUM_BROWSER)
 
-        logging.info(f'{self.get_name()}: Open a website: {rosysoft_constant.URL}')
+        browser.get(self.get_portal())
+        logging.info(f'{self.get_name()}: Open a website: {self.get_portal()}')
         logging.info(f'{self.get_name()}: Please wait .. ({rosysoft_constant.DELAY_TIME_LOAD_PAGE}s)')
         time.sleep(rosysoft_constant.DELAY_TIME_LOAD_PAGE)
 
-        tab2_button = browser.find_element(By.ID, rosysoft_constant.TAB2_BUTTON_BY_CLASS_TYPE)
+        tab2_button = browser.find_element(By.ID, rosysoft_constant.TAB2_BUTTON_BY_ID_TYPE)
         tab2_button.click()
         logging.info(f'{self.get_name()}: Please wait .. ({rosysoft_constant.DELAY_TIME_SKIP}s)')
         time.sleep(rosysoft_constant.DELAY_TIME_SKIP)
 
-        logging.info(f'{self.get_name()}: Enter data code lookup: {self.get_code_lookup()} into the from.')
+        logging.info(f'{self.get_name()}: Enter data code lookup: {self.check_invoice()} into the from.')
         text_box_tax_code = browser.find_element(By.ID, rosysoft_constant.TEXT_TAXCODE_BY_ID_TYPE)
-        text_box_tax_code.send_keys(self.get_code_lookup()['tax_code'])
+        text_box_tax_code.send_keys(self.check_invoice())
         logging.info(f'{self.get_name()}: Please wait .. ({rosysoft_constant.DELAY_TIME_SKIP}s)')
         time.sleep(rosysoft_constant.DELAY_TIME_SKIP)
 
         text_box_search_code = browser.find_element(By.ID, rosysoft_constant.TEXT_SEARCH_CODE_BY_ID_TYPE)
-        text_box_search_code.send_keys(self.get_code_lookup()['lookup_code'])
+        text_box_search_code.send_keys(self.get_code_lookup())
         logging.info(f'{self.get_name()}: Please wait .. ({rosysoft_constant.DELAY_TIME_SKIP}s)')
         time.sleep(rosysoft_constant.DELAY_TIME_SKIP)
 
