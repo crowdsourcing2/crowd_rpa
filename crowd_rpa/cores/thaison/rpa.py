@@ -1,16 +1,8 @@
-import os
-import pathlib
 import time
 import logging
 from abc import ABC
-from io import BytesIO
 
-import re
-import easyocr
-import cv2
-import numpy as np
-from PIL import Image
-
+from crowd_rpa.utils.rpa_util import util_rpa
 from driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
@@ -21,6 +13,29 @@ class ThaiSonRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
 
+    def get_portal(self):
+        url = ""
+        path = thai_son_constant.FILE_PATH
+        if path.endswith(".pdf"):
+            url = util_rpa.read_pdf(path, thai_son_constant.URL_KEYWORD,
+                                    thai_son_constant.LAST_KEYWORD)
+        elif path.endswith(".xml"):
+            url = util_rpa.read_xml(path, thai_son_constant.URL_KEYWORD)
+        return url
+
+    def get_code_lookup(self):
+        code_bill = ""
+        path = thai_son_constant.FILE_PATH
+        if path.endswith(".pdf"):
+            code_bill = util_rpa.read_pdf(path, thai_son_constant.CODE_BILL_KEYWORD,
+                                          thai_son_constant.URL_KEYWORD)
+        elif path.endswith(".xml"):
+            code_bill = util_rpa.read_xml(path, thai_son_constant.CODE_BILL_KEYWORD)
+        return code_bill
+
+    def check_invoice(self):
+        return None
+
     def extract_data(self):
         self.process_download_xml_pdf()
 
@@ -30,54 +45,11 @@ class ThaiSonRpa(IRpa, ABC):
     def get_name(self):
         return thai_son_constant.META_DATA['RPA_NAME']
 
-    def get_code_lookup(self):
-        # TODO: you must be code here!
-        return thai_son_constant.META_DATA['URL']
 
-    def enter_captcha(self, browser):
-        retry = 0
-        while retry < thai_son_constant.RETRY_MAX:
-            logging.info(f'{self.get_name()}: Please wait .. ({thai_son_constant.DELAY_TIME_LOAD_PAGE}s)')
-            mst_text = browser.find_element(By.XPATH, thai_son_constant.MA_NHAN_HOA_DON_XPATH)
-            mst_text.send_keys(thai_son_constant.MA_NHAN_HOA_DON)
-            logging.info(f'{self.get_name()}: Enter captcha')
-            captcha_img = browser.find_element(By.XPATH, thai_son_constant.CAPTCHA_IMG_XPATH)
-            # Get the <img> tag's container
-            img_location = captcha_img.location
-            img_size = captcha_img.size
-            # Get all photos of the website
-            screenshot = browser.get_screenshot_as_png()
-            # Use Pillow to crop and save the image according to the <img> tag's container
-            image = Image.open(BytesIO(screenshot))
-            cropped_image = image.crop((img_location['x'], img_location['y'], img_location['x'] + img_size['width'],
-                                        img_location['y'] + img_size['height']))
-            # Image to text
-            captcha_text = ""
-            try:
-                # Blur captcha
-                cropped_image_np = np.array(cropped_image)
-                gray_image = cv2.cvtColor(cropped_image_np, cv2.COLOR_BGR2GRAY)
-                # Read captcha
-                reader = easyocr.Reader(['en'])
-                cropped_image_np = np.array(gray_image)
-                results = reader.readtext(cropped_image_np)
-                captcha_text = results[0][1]
-            except Exception as e:
-                logging.info(f'{self.get_name()}: {e}')
-            captcha_input = browser.find_element(By.XPATH, thai_son_constant.CAPTCHA_TEXT_XPATH)
-            captcha_input.clear()
-            captcha_input.send_keys(captcha_text)
-            # Click FIND
-            logging.info(f'{self.get_name()}: Click Find')
-            browser.find_element(By.XPATH, thai_son_constant.FIND_BTN_XPATH).click()
-            logging.info(f'{self.get_name()}: Please wait .. ({thai_son_constant.DELAY_TIME_SKIP}s)')
-            time.sleep(thai_son_constant.DELAY_TIME_SKIP)
-            # Check error captcha
-            try:
-                browser.find_element(By.XPATH, thai_son_constant.ERROR_XPATH)
-                retry += 1
-            except Exception as e:
-                break
+    def enter_id(self, browser):
+        logging.info(f'{self.get_name()}: Please wait .. ({thai_son_constant.DELAY_TIME_LOAD_PAGE}s)')
+        mst_text = browser.find_element(By.XPATH, thai_son_constant.MA_NHAN_HOA_DON_XPATH)
+        mst_text.send_keys(self.get_code_lookup())
 
     def process_download_xml_pdf(self):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
@@ -87,11 +59,19 @@ class ThaiSonRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Please wait .. ({thai_son_constant.DELAY_OPEN_MAXIMUM_BROWSER}s)')
         time.sleep(thai_son_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         # Open a website
-        browser.get(self.get_code_lookup())
-        logging.info(f'{self.get_name()}: Open a website: {self.get_code_lookup()}')
+        browser.get(self.get_portal())
+        logging.info(f'{self.get_name()}: Open a website: {self.get_portal()}')
         time.sleep(thai_son_constant.DELAY_TIME_LOAD_PAGE)
+        # Enter ID
+        self.enter_id(browser)
         #ClearCaptCha
-        self.enter_captcha(browser)
+        util_rpa.enter_captcha(self.get_name(), browser, By.XPATH, By.XPATH,
+                               thai_son_constant.CAPTCHA_IMG_XPATH,
+                               thai_son_constant.CAPTCHA_TEXT_XPATH,
+                               By.XPATH, thai_son_constant.BTN_FORM_BY_XPATH_TYPE, By.XPATH,
+                               thai_son_constant.ERROR_XPATH, thai_son_constant.RETRY_MAX,
+                               thai_son_constant.DELAY_TIME_SKIP, callback=self.enter_id, callback_args=[browser],
+                               form_btn_handle="click")
         # Download file zip
         logging.info(f'{self.get_name()}: Download Zip')
         download_zip = browser.find_element(By.XPATH, thai_son_constant.DOWNLOAD_ZIP_XPATH)
