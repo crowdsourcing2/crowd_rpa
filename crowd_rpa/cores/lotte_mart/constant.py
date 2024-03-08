@@ -1,6 +1,13 @@
 class LotteMartConstant:
-    IMG_CAPTCHA_BY_CLASS_TYPE = "img_captcha"
-    SEARCH_BNT_BY_CLASS_TYPE = 'icon-search'
+    FILE_PATH = './RPA_TEMP/lottemart.pdf'
+    # URL_KEYWORD = 'PortalLink'  # tag name contains data
+    URL_KEYWORD = 'Quý khách hàng vui lòng tra cứu hóa đơn điện tử tại website:'
+    # CODE_BILL_KEYWORD = 'Key'
+    CODE_BILL_KEYWORD = 'Mã tra cứu:'
+    LAST_KEYWORD = 'STT'
+
+    FORM_BY_ID_TYPE = 'Searchform'
+    IMG_CAPTCHA_BY_CLASS_TYPE = "captcha_img"
     TEXT_BOX_BY_CLASS_TYPE = 'form-control'
     TEXT_BOX_CAPTCHA_BY_ID = 'captch'
     ERROR_ALERT_BY_XPATH = '//*[@id="messagewrapper"]/div'
@@ -8,7 +15,7 @@ class LotteMartConstant:
     VIEW_BTN_BY_XPATH = '//*[@class="table"]/tbody/tr/td[10]/a'
     DOWNLOAD_ZIP_BTN_BY_NAME_TYPE = 'down'
     CORE_NAME = 'CORES.LOTTEMART.RPA'
-    URL = 'https://lottemart-bdg-tt78.vnpt-invoice.com.vn/HomeNoLogin/SearchByFkey'
+    URL = None
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,
