@@ -25,6 +25,9 @@ class BkavRpa(IRpa, ABC):
     def get_name(self):
         return bkav_constant.META_DATA['RPA_NAME']
 
+    def check_invoice(self):
+        return None
+
     def get_portal(self):
         urls = self.read_pdf()
         if urls:
