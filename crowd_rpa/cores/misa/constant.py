@@ -4,10 +4,15 @@ from settings import cfg
 
 
 class MisaConstant:
+    FILE_PATH = './RPA_TEMP/misa.pdf'
+    URL_KEYWORD = 'Tra cứu tại Website (Search on Website):'
+    CODE_BILL_KEYWORD = 'Mã tra cứu hóa đơn (Invoice code):'
+    LAST_KEYWORD = 'Mã CQT: '
+
     DOWNLOAD_BTN_BY_CLASS_TYPE = 'download-invoice'
     DOWNLOAD_PDF_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div'
     DOWNLOAD_XML_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div[2]'
-    URL = 'https://www.meinvoice.vn/tra-cuu/?sc='
+    URL = None
     CORE_NAME = 'CORES.MISA.RPA'
     META_DATA = {
         'URL': URL,
