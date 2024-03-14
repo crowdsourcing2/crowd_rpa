@@ -11,7 +11,7 @@ class BkavConstant:
     DOWNLOAD_PDF_XPATH = '//*[@id="LinkDownPDF"]'
     DOWNLOAD_XML_XPATH = '//*[@id="LinkDownXML"]'
     URL = None
-    CORE_NAME = 'CORES.BKAV.RPA'
+    CORE_NAME = 'BKAV'
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,
@@ -27,7 +27,7 @@ class BkavConstant:
     LATEST_VERSION = 'v1'
     DELAY_OPEN_MAXIMUM_BROWSER = 0.2
     DELAY_TIME_LOAD_PAGE = 3
-    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 2
+    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5
     DELAY_TIME_SKIP = 1
 
 

@@ -17,10 +17,10 @@ class RosySoftConstant:
     DOWNLOAD_XML_XPATH = '//*[@class="row-fluid"]/div/div/article/div/div/div[2]/table/tbody/tr/td[2]/div/span[3]/img'
     URL = None
     URL_N = 'https://einv.rosysoft.vn:8386/RSeInvoiceSearch'
-    CORE_NAME = 'CORES.ROSY_SOFT.RPA'
+    CORE_NAME = 'ROSYSOFT'
     META_DATA = {
         'URL': URL,
-        'RPA_NAME': 'CORES.ROSY_SOFT.RPA',
+        'RPA_NAME': CORE_NAME,
         'DRIVER_NAME': 'chrome'
     }
     VERSIONS = {

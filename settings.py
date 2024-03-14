@@ -1,3 +1,15 @@
+import os
+import yaml
+import tldextract
+
+from pathlib import Path
+
+
+def load_config(file_path):
+    with open(file_path, 'r') as file:
+        return yaml.safe_load(file)
+
+
 class Config:
     VERSION = "v0.1.0"
     TIME_RELOADING_PAGE = 2
@@ -17,7 +29,7 @@ class Config:
     SCALE_WIDTH_DEFAULT = 800
     COOKIE_EXPIRY_DAYS = 30
     MASTER_TOOLS_LOGO = "https://cdn-icons-png.flaticon.com/512/807/807262.png"
-    STORAGE_PATH = './RPA_TEMP'
+    PORTALS_CONFIG = load_config('portal_config.yaml')
 
 
 cfg = Config()

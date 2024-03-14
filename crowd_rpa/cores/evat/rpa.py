@@ -7,6 +7,7 @@ from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.evat.constant import evat_constant
 from crowd_rpa.utils.rpa_util import util_rpa
 
+
 class EvatRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
@@ -27,7 +28,7 @@ class EvatRpa(IRpa, ABC):
         path = evat_constant.FILE_PATH
         if path.endswith(".pdf"):
             lookup_code = util_rpa.read_pdf(path, evat_constant.LOOKUP_KEYWORD,
-                                          evat_constant.COMPANY_KEYWORD)
+                                            evat_constant.COMPANY_KEYWORD)
         elif path.endswith(".xml"):
             lookup_code = util_rpa.read_xml(path, evat_constant.LOOKUP_KEYWORD)
         return lookup_code
@@ -84,16 +85,19 @@ class EvatRpa(IRpa, ABC):
 
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
 
-        def versions(self) -> dict:
-            return evat_constant.VERSIONS
+    def versions(self) -> dict:
+        return evat_constant.VERSIONS
 
-        def get_latest_version(self) -> dict:
-            return {
-                'version': evat_constant.LATEST_VERSION,
-                'info': evat_constant.VERSIONS[evat_constant.LATEST_VERSION]
-            }
+    def get_latest_version(self) -> dict:
+        return {
+            'version': evat_constant.LATEST_VERSION,
+            'info': evat_constant.VERSIONS[evat_constant.LATEST_VERSION]
+        }
+
+
+evat_ins = EvatRpa(evat_constant.META_DATA)
+
 
 if __name__ == '__main__':
-    evat_rpa_ins = EvatRpa(evat_constant.META_DATA)
-    evat_rpa_ins.extract_data()
-    evat_rpa_ins.reset()
+    evat_ins.extract_data()
+    evat_ins.reset()

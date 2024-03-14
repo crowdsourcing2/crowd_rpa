@@ -5,7 +5,6 @@ import time
 import re
 
 import cv2
-import easyocr
 import numpy as np
 from PIL import Image
 import xml.etree.ElementTree as ET

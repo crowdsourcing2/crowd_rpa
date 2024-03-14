@@ -120,7 +120,9 @@ class RosySoftRpa(IRpa, ABC):
         }
 
 
+rosy_soft_ins = RosySoftRpa(rosysoft_constant.META_DATA)
+
+
 if __name__ == '__main__':
-    rosy_rpa_ins = RosySoftRpa(rosysoft_constant.META_DATA)
-    rosy_rpa_ins.extract_data()
-    rosy_rpa_ins.reset()
+    rosy_soft_ins.extract_data()
+    rosy_soft_ins.reset()

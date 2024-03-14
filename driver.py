@@ -18,11 +18,11 @@ except Exception as e:
 
 
 class WebDriver:
-    def __init__(self, tag: str = "firefox"):
+    def __init__(self, tag: str = "firefox", download_directory=None):
         if tag == "firefox":
             self._driver = self.fire_fox()
         elif tag == "chrome":
-            self._driver = self.make_stealth(self.google_chrome())
+            self._driver = self.make_stealth(self.google_chrome(download_directory))
         elif tag == "undetected_chrome":
             self._driver = self.make_stealth(self.undetected_chrome())
         elif tag == "browser_stack":
@@ -47,15 +47,15 @@ class WebDriver:
     @staticmethod
     def undetected_chrome():
         options = uc.ChromeOptions()
-        options.headless = True
-        options.add_argument('--headless')
+        # options.headless = True
+        # options.add_argument('--headless')
         options.arguments.extend(["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])  # << this
 
         chrome = uc.Chrome(options=options)
         return chrome
 
     @staticmethod
-    def google_chrome():
+    def google_chrome(download_directory=None):
         from selenium.webdriver.chrome.options import Options
 
         chrome_options = Options()
@@ -66,10 +66,7 @@ class WebDriver:
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("start-maximized")
         chrome_options.page_load_strategy = "normal"
-        if not pathlib.Path(cfg.STORAGE_PATH).is_dir():
-            os.mkdir(cfg.STORAGE_PATH)
-
-        prefs = {"download.default_directory": cfg.STORAGE_PATH}
+        prefs = {"download.default_directory": download_directory}
         chrome_options.add_experimental_option("prefs", prefs)
 
         driver = webdriver.Chrome(options=chrome_options)

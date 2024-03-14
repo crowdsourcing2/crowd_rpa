@@ -1,17 +1,11 @@
-import cv2
 import time
 import logging
-import easyocr
-
-import numpy as np
 from abc import ABC
-from PIL import Image
-from io import BytesIO
 
-from crowd_rpa.utils.rpa_util import util_rpa
 from driver import WebDriver
 from selenium.webdriver.common.by import By
 
+from crowd_rpa.utils.rpa_util import util_rpa
 from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.lotte_mart.constant import lottemart_constant
 
@@ -19,17 +13,6 @@ from crowd_rpa.cores.lotte_mart.constant import lottemart_constant
 class LotteMartRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
-
-    def get_portal(self):
-        url = ""
-        path = lottemart_constant.FILE_PATH
-        if path.endswith(".pdf"):
-            url = util_rpa.read_pdf(path, lottemart_constant.URL_KEYWORD,
-                                    lottemart_constant.CODE_BILL_KEYWORD)
-        elif path.endswith(".xml"):
-            url = util_rpa.read_xml(path, lottemart_constant.URL_KEYWORD)
-
-        return url
 
     def get_code_lookup(self):
         code_bill = ""
@@ -40,9 +23,6 @@ class LotteMartRpa(IRpa, ABC):
         elif path.endswith(".xml"):
             code_bill = util_rpa.read_xml(path, lottemart_constant.CODE_BILL_KEYWORD)
         return code_bill
-
-    def check_invoice(self):
-        return None
 
     def extract_data(self):
         self.process_download_xml_pdf()
@@ -107,7 +87,9 @@ class LotteMartRpa(IRpa, ABC):
         }
 
 
+lotte_ins = LotteMartRpa(lottemart_constant.META_DATA)
+
+
 if __name__ == '__main__':
-    lotte_rpa_ins = LotteMartRpa(lottemart_constant.META_DATA)
-    lotte_rpa_ins.extract_data()
-    lotte_rpa_ins.reset()
+    lotte_ins.extract_data()
+    lotte_ins.reset()

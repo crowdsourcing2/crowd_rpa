@@ -19,7 +19,7 @@ class DigiWorldConstant:
     VIEW_BTN_BY_XPATH = '//*[@class="table"]/tbody/tr/td[10]/a'
     DOWNLOAD_BTN_BY_NAME_TYPE = 'down'
     URL = None
-    CORE_NAME = 'CORES.DIGIWORLD.RPA'
+    CORE_NAME = 'DIGIWORLD'
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,

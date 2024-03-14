@@ -2,7 +2,6 @@ import logging
 import time
 from abc import ABC
 
-import PyPDF2
 import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -135,7 +134,9 @@ class CyberbillRpa(IRpa, ABC):
         }
 
 
+cyberbill_ins = CyberbillRpa(cyber_bill_constant.META_DATA)
+
+
 if __name__ == '__main__':
-    cyberbill_rpa_ins = CyberbillRpa(cyber_bill_constant.META_DATA)
-    cyberbill_rpa_ins.extract_data()
-    cyberbill_rpa_ins.reset()
+    cyberbill_ins.extract_data()
+    cyberbill_ins.reset()

@@ -19,7 +19,7 @@ class VnptConstant:
     VIEW_BTN_BY_XPATH = '//*[@class="table"]/tbody/tr/td[10]/a'
     DOWNLOAD_BTN_BY_NAME_TYPE = 'down'
     URL = None
-    CORE_NAME = 'CORES.VNPT.RPA'
+    CORE_NAME = 'VNPT'
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,

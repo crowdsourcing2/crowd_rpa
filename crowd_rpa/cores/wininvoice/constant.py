@@ -17,7 +17,7 @@ class WininvoiceConstant:
     DOWNLOAD_PDF_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div'
     DOWNLOAD_XML_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div[2]'
     URL = None
-    CORE_NAME = 'CORES.WININVOICE.RPA'
+    CORE_NAME = 'WININVOICE'
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,

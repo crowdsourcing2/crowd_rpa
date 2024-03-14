@@ -18,7 +18,7 @@ class ThaiSonConstant:
     BTN_FORM_BY_XPATH_TYPE = '/html/body/div[1]/div[3]/form/div/div[1]/div[1]/div/div/div/div[4]/div[2]/button'
     DOWNLOAD_ZIP_XPATH = '//*[@id="formgr"]/div/div/div[1]/div[1]/div/button[2]'
     URL = None
-    CORE_NAME = 'CORES.THAI_SON.RPA'
+    CORE_NAME = 'THAI_SON'
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,

@@ -4,7 +4,7 @@ from abc import ABC
 from driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
-from crowd_rpa.cores.Vnpt.constant import vnpt_constant
+from crowd_rpa.cores.vnpt.constant import vnpt_constant
 from crowd_rpa.utils.rpa_util import util_rpa
 class VnptRpa(IRpa, ABC):
     def __init__(self, meta_data):
@@ -82,9 +82,6 @@ class VnptRpa(IRpa, ABC):
         browser.quit()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
 
-
-
-
     def versions(self) -> dict:
         return vnpt_constant.VERSIONS
 
@@ -93,7 +90,11 @@ class VnptRpa(IRpa, ABC):
             'version': vnpt_constant.LATEST_VERSION,
             'info': vnpt_constant.VERSIONS[vnpt_constant.LATEST_VERSION]
         }
+
+
+vnpt_ins = VnptRpa(vnpt_constant.META_DATA)
+
+
 if __name__ == '__main__':
-    vnpt_rpa_ins = VnptRpa(vnpt_constant.META_DATA)
-    vnpt_rpa_ins.extract_data()
-    vnpt_rpa_ins.reset()
+    vnpt_ins.extract_data()
+    vnpt_ins.reset()

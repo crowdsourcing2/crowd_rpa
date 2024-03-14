@@ -4,7 +4,7 @@ from abc import ABC
 from driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
-from crowd_rpa.cores.Wininvoice.constant import wininvoice_constant
+from crowd_rpa.cores.wininvoice.constant import wininvoice_constant
 from crowd_rpa.utils.rpa_util import util_rpa
 
 class WininvoiceRpa(IRpa, ABC):
@@ -106,7 +106,9 @@ class WininvoiceRpa(IRpa, ABC):
         }
 
 
+wininvoice_ins = WininvoiceRpa(wininvoice_constant.META_DATA)
+
+
 if __name__ == '__main__':
-    wininvoice_rpa_ins = WininvoiceRpa(wininvoice_constant.META_DATA)
-    wininvoice_rpa_ins.extract_data()
-    wininvoice_rpa_ins.reset()
+    wininvoice_ins.extract_data()
+    wininvoice_ins.reset()

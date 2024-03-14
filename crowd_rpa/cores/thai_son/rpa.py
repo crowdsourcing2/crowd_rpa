@@ -6,7 +6,7 @@ from crowd_rpa.utils.rpa_util import util_rpa
 from driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
-from crowd_rpa.cores.thaison.constant import thai_son_constant
+from crowd_rpa.cores.thai_son.constant import thai_son_constant
 
 
 class ThaiSonRpa(IRpa, ABC):
@@ -44,7 +44,6 @@ class ThaiSonRpa(IRpa, ABC):
 
     def get_name(self):
         return thai_son_constant.META_DATA['RPA_NAME']
-
 
     def enter_id(self, browser):
         logging.info(f'{self.get_name()}: Please wait .. ({thai_son_constant.DELAY_TIME_LOAD_PAGE}s)')
@@ -91,7 +90,9 @@ class ThaiSonRpa(IRpa, ABC):
         }
 
 
+thai_son_ins = ThaiSonRpa(thai_son_constant.META_DATA)
+
+
 if __name__ == '__main__':
-    misa_rpa_ins = ThaiSonRpa(thai_son_constant.META_DATA)
-    misa_rpa_ins.extract_data()
-    misa_rpa_ins.reset()
+    thai_son_ins.extract_data()
+    thai_son_ins.reset()

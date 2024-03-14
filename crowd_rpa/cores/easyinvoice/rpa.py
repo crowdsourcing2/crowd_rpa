@@ -96,7 +96,9 @@ class EasyInvoiceRpa(IRpa, ABC):
         }
 
 
+easy_invoice_ins = EasyInvoiceRpa(easy_invoice_constant.META_DATA)
+
+
 if __name__ == '__main__':
-    easy_invoice_rpa_ins = EasyInvoiceRpa(easy_invoice_constant.META_DATA)
-    easy_invoice_rpa_ins.extract_data()
-    easy_invoice_rpa_ins.reset()
+    easy_invoice_ins.extract_data()
+    easy_invoice_ins.reset()

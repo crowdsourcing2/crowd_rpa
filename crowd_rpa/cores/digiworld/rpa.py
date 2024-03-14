@@ -95,7 +95,9 @@ class DigiWorldRpa(IRpa, ABC):
         }
 
 
+digi_world_ins = DigiWorldRpa(digi_world_constant.META_DATA)
+
+
 if __name__ == '__main__':
-    digi_world_rpa_ins = DigiWorldRpa(digi_world_constant.META_DATA)
-    digi_world_rpa_ins.extract_data()
-    digi_world_rpa_ins.reset()
+    digi_world_ins.extract_data()
+    digi_world_ins.reset()

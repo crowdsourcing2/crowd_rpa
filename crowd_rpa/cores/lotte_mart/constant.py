@@ -14,7 +14,7 @@ class LotteMartConstant:
     DOWNLOAD_PDF_BY_XPATH = '//*[@class="table"]/tbody/tr/td[11]/a/i'
     VIEW_BTN_BY_XPATH = '//*[@class="table"]/tbody/tr/td[10]/a'
     DOWNLOAD_ZIP_BTN_BY_NAME_TYPE = 'down'
-    CORE_NAME = 'CORES.LOTTEMART.RPA'
+    CORE_NAME = 'LOTTEMART'
     URL = None
     META_DATA = {
         'URL': URL,

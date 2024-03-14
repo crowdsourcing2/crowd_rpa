@@ -21,7 +21,7 @@ class EasyInvoiceConstant:
     DOWNLOAD_XML_XPATH = '//*[@id="invoice-footer"]/div/button[5]'
     URL = None
     SETTING_SECURITY = 'chrome://settings/security'
-    CORE_NAME = 'CORES.EASYINVOICE.RPA'
+    CORE_NAME = 'EASYINVOICE'
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,

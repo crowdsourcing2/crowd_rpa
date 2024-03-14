@@ -1,0 +1,128 @@
+portals:
+  NCC:
+    misa:
+      name: "Misa"
+      domains:
+        - .tcol.vn
+        - skrtc.com
+        - .meinvoice.vn
+    bkav:
+      name: "BKAV"
+      domains:
+        - .ehoadon.vn
+    easyinvoice:
+      name: "Easyinvoice"
+      domains:
+        - .easyinvoice.vn
+        - .easyinvoice.com.vn
+    viettel:
+      name: "VIETTEL"
+      domains:
+        - hddt.haxaco.com.vn
+        - vietteltelecom.vn
+        - sinvoice.viettel.vn
+        - vinvoice.viettel.vn
+    ixhd:
+      name: "IXHD"
+      domains:
+        - .xuathoadon.com.vn
+        - tracuu.xuathoadon.vn
+    fast_invoice:
+      name: "FAST INVOICE"
+      domains:
+        - .fast.com.vn
+    thai_son:
+      name: "Thái Sơn"
+      domains:
+        - einvoice.com.vn
+        - .thaison.vn
+    vnpt:
+      name: "VNPT"
+      domains:
+        - .vnpt-invoice.com.vn
+        - .cathay-ins.com.vn:8440
+        - einvoice.saigontourist.com.vn
+        - invoice.longthanhgolfresort.com
+        - einvoice.gemadept.com.vn
+        - .icdphuclong.com.vn
+        - .digiworld.com.vn
+    nacencomm:
+      name: "Nacencomm"
+      domains:
+        - .nacencomm.vn
+    m_invoice:
+      name: "M Invoice"
+      domains:
+          - .minvoice.com.vn
+    ngp:
+      name: "Ngô Gia Phát"
+      domains:
+        - .ngogiaphat.vn
+    vn_invoice:
+      name: "VN Invoice"
+      domains:
+        - .agribank.com.vn
+        - .vietcombank.com.vn
+        - .vninvoice.vn/portal
+    evat:
+      name: "EVAT"
+      domains:
+        - .evat.vn
+    tgdd:
+      name: "Thế giới di động"
+      domains:
+        - hddt.tantamphucvu.vn
+        - .nhathuocankhang.com
+    247_expess:
+      name: "247 Expess"
+      domains:
+        - .247express.vn/tra-cuu
+    evn_invoice:
+      name: "EVN Invoice"
+      domains:
+        - .evn.com.vn
+    yamaha:
+      name: "Yamaha"
+      domains:
+        - .yamaha-motor.com.vn
+    gas_petrolimex:
+      name: "Gas Petrolimex"
+      domains:
+        - hoadon.pgas.vn
+    smart:
+      name: "Smart"
+      domains:
+        - .smartsign.com.vn
+    hilo:
+      name: 'HILO'
+      domains:
+        - .hilo.com.vn
+    saigon_invoice:
+      name: "Saigon Invoice"
+      domains:
+        - invoice.ehcm.vn
+    itc:
+      name: "ITC"
+      domains:
+        - .itcinvoice.vn
+    mobifone:
+      name: "Mobifone"
+      domains:
+        - .mobifone.vn
+    lien_son:
+      name: "Liên Sơn"
+      domains:
+        - hddt.saigonngoisao.com.vn
+        - .toyota.binhduong.vn
+    sea_soft:
+      name: "Sea soft"
+      domains:
+        - .hiephungnhatrang.com
+    soft_dreams:
+      name: "Soft Dreams"
+      domains:
+        - .vietpharm.com.vn
+    cyberbill:
+      name: "Cyberbill"
+      domains:
+        - .cyberbill.vn

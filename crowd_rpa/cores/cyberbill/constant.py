@@ -13,7 +13,7 @@ class CyberBillConstant:
     DOWNLOAD_PDF_XPATH = '/html/body/app-root/ng-component/ng-component/popup-modal/div/div/div/div[3]/button[2]'
     DOWNLOAD_XML_XPATH = '/html/body/app-root/ng-component/ng-component/popup-modal/div/div/div/div[3]/button[1]'
     URL = None
-    CORE_NAME = 'CORES.CYBERBILL.RPA'
+    CORE_NAME = 'CYBERBILL'
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,
