@@ -1,13 +1,6 @@
-from os.path import join
-
-from settings import cfg
-
-
 class DigiWorldConstant:
     FILE_PATH = './RPA_TEMP/digiworld.pdf'
-    # URL_KEYWORD = 'PortalLink'  # tag name contains data
     URL_KEYWORD = 'Hóa Đơn Điện Tử tra cứu tại website :'
-    # CODE_BILL_KEYWORD = 'Fkey'
     CODE_BILL_KEYWORD = '- Mã nhận hóa đơn :'
     LAST_KEYWORD = 'Đơn vị cung cấp giải pháp hóa đơn điện tử:'
 
