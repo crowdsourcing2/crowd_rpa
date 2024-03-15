@@ -2,6 +2,7 @@ import os
 import time
 import logging
 from abc import ABC
+from pathlib import Path
 
 from driver import WebDriver
 from selenium.webdriver.common.by import By
@@ -9,33 +10,32 @@ from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.bkav.constant import bkav_constant
 from selenium.common.exceptions import TimeoutException
 
-from settings import cfg
-
 
 class BkavRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
 
-    def extract_data(self, portal, lookup_code):
-        self.process_download_xml_pdf(portal, lookup_code)
+    def extract_data(self, portal, lookup_code, storage_pth, filename):
+        return self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename)
 
-    def get_driver(self):
-        return WebDriver(tag=self.driver_name)()
+    def get_driver(self, download_directory=None):
+        return WebDriver(tag=self.driver_name, download_directory=download_directory)()
 
     def get_name(self):
         return bkav_constant.META_DATA['RPA_NAME']
 
-    def process_download_xml_pdf(self, portal, lookup_code):
+    def process_download_xml_pdf(self, portal, lookup_code, storage_pth, filename):
 
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
-        # Khởi tạo download directory
-        browser = self.get_driver()
+        portal_pth = os.path.join(storage_pth, bkav_constant.CORE_NAME)
+        if not Path(portal_pth).is_dir():
+            os.mkdir(portal_pth)
+        save_pth = os.path.join(portal_pth, filename)
+        if not Path(save_pth):
+            os.mkdir(save_pth)
+        browser = self.get_driver(save_pth)
         # Maximize the browser window to full screen
         browser.maximize_window()
-        # Thiết lập thư mục mặc định cho việc tải xuống
-        params = {'behavior': 'allow', 'downloadPath': os.path.join(cfg.STORAGE_PATH, bkav_constant.CORE_NAME)}
-        browser.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
         logging.info(f'{self.get_name()}: Please wait .. ({bkav_constant.DELAY_OPEN_MAXIMUM_BROWSER}s)')
         time.sleep(bkav_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         # Open a website
@@ -43,13 +43,6 @@ class BkavRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Open a website: {portal}')
         time.sleep(bkav_constant.DELAY_TIME_LOAD_PAGE)
         logging.info(f'{self.get_name()}: Please wait .. ({bkav_constant.DELAY_TIME_LOAD_PAGE}s)')
-        # Enter lookup code
-        logging.info(f'{self.get_name()}: Enter lookup code')
-        input_id = browser.find_element(By.CLASS_NAME, bkav_constant.INPUT_ID)
-        input_id.send_keys(lookup_code)
-        btn_search = browser.find_element(By.ID, bkav_constant.BUTTON_SEARCH_BY_ID)
-        btn_search.click()
-        time.sleep(bkav_constant.DELAY_TIME_LOAD_PAGE)
         try:
             iframe = browser.find_element(By.ID, bkav_constant.IFRAME_BY_ID)
             browser.get(iframe.get_attribute('src'))
@@ -89,5 +82,8 @@ bkav_ins = BkavRpa(bkav_constant.META_DATA)
 
 
 if __name__ == '__main__':
-    bkav_ins.extract_data("https://www.meinvoice.vn/tra-cuu/", "W8T2F353A8D")
+    bkav_ins.extract_data("https://tracuu.ehoadon.vn",
+                          "Y88TPVQF501",
+                          r"D:\HoaiThu_Nam4\THUCTAP\crowd_rpa\tests\output",
+                          "test")
     bkav_ins.reset()
