@@ -18,11 +18,11 @@ except Exception as e:
 
 
 class WebDriver:
-    def __init__(self, tag: str = "firefox", download_directory=None):
+    def __init__(self, tag: str = "firefox", download_directory=None, more_option=False):
         if tag == "firefox":
             self._driver = self.fire_fox()
         elif tag == "chrome":
-            self._driver = self.make_stealth(self.google_chrome(download_directory))
+            self._driver = self.make_stealth(self.google_chrome(download_directory, more_option))
         elif tag == "undetected_chrome":
             self._driver = self.make_stealth(self.undetected_chrome())
         elif tag == "browser_stack":
@@ -55,7 +55,7 @@ class WebDriver:
         return chrome
 
     @staticmethod
-    def google_chrome(download_directory=None):
+    def google_chrome(download_directory=None, more_option: bool = False):
         from selenium.webdriver.chrome.options import Options
 
         chrome_options = Options()
@@ -66,9 +66,12 @@ class WebDriver:
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("start-maximized")
         chrome_options.page_load_strategy = "normal"
-        prefs = {"download.default_directory": download_directory}
+        if more_option:
+            prefs = {"download.default_directory": download_directory, "safebrowsing.enabled": "false",
+                     "safebrowsing.disable_download_protection": "true"}
+        else:
+            prefs = {"download.default_directory": download_directory}
         chrome_options.add_experimental_option("prefs", prefs)
-
         driver = webdriver.Chrome(options=chrome_options)
         return driver
 
@@ -116,14 +119,3 @@ class WebDriver:
             options=options)
 
         return driver
-
-
-
-
-
-
-    
-
-    
-
-

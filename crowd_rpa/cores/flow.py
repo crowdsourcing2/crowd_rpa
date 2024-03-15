@@ -3,8 +3,8 @@ import json
 from copy import deepcopy
 from pathlib import Path
 
-from cores.flow_enum import ProcessStatus, FlowName, CollectorStatus
-from cores.utils import *
+from crowd_rpa.cores.flow_enum import ProcessStatus, FlowName, CollectorStatus
+from crowd_rpa.cores.utils import *
 
 
 class CollectorFlow:
@@ -137,9 +137,9 @@ class CollectorFlow:
 
 if __name__ == '__main__':
     metadata = {
-        'root_pth': r"C:\Users\phduo\Downloads\crowd_electronic",
+        'root_pth': r"D:\RainScales\crowd_rpa\tests\data",
         'data': {},
-        'storage_pth': r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\output'
+        'storage_pth': r'D:\RainScales\crowd_rpa\tests\output'
     }
     c = CollectorFlow()
     o = c.infer_flow(metadata)

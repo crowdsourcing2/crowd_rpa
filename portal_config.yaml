@@ -45,7 +45,6 @@ portals:
         - invoice.longthanhgolfresort.com
         - einvoice.gemadept.com.vn
         - .icdphuclong.com.vn
-        - .digiworld.com.vn
     nacencomm:
       name: "Nacencomm"
       domains:
@@ -126,3 +125,7 @@ portals:
       name: "Cyberbill"
       domains:
         - .cyberbill.vn
+    digiworld:
+      name: "Digiworld"
+      domains:
+        - .digiworld.com.vn

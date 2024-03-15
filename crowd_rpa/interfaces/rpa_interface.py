@@ -23,7 +23,7 @@ class IRpa:
         raise NotImplementedError
 
     @abstractmethod
-    def get_driver(self, download_directory=None):
+    def get_driver(self, download_directory=None, more_option=False):
         raise NotImplementedError
 
     @abstractmethod
