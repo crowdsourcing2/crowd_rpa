@@ -1,13 +1,16 @@
-import fitz
-from io import BytesIO
-import logging
-import time
 import re
-
+import os
 import cv2
+import time
+import fitz
+import shutil
+import zipfile
+import logging
+import easyocr
 import numpy as np
 from PIL import Image
-import xml.etree.ElementTree as ET
+from io import BytesIO
+import xml.etree.ElementTree as et
 
 
 class UtilRpa:
@@ -30,7 +33,7 @@ class UtilRpa:
     @staticmethod
     def read_xml(path, keyword):
         try:
-            tree = ET.parse(path)
+            tree = et.parse(path)
             root = tree.getroot()
 
             # Find the PortalLink and Key elements
@@ -40,7 +43,7 @@ class UtilRpa:
 
             raise ValueError('Keyword not found in XML')
 
-        except ET.ParseError as parse_error:
+        except et.ParseError as parse_error:
             raise ValueError(f"Error parsing XML: {parse_error}")
         except Exception as unexpected_error:
             raise ValueError(f"An unexpected error occurred: {unexpected_error}")
@@ -101,6 +104,29 @@ class UtilRpa:
                     callback(*callback_args)
             except Exception as e:
                 break
+
+    @staticmethod
+    def extract_zip_files_and_keep_specific_files(directory_path):
+        for root, dirs, files in os.walk(directory_path):
+            for file in files:
+                if file.endswith('.zip'):
+                    zip_file = os.path.join(root, file)
+                    extract_to = os.path.splitext(zip_file)[
+                        0]
+                    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                        zip_ref.extractall(extract_to)
+                    # find PDF và XML
+                    for extracted_root, extracted_dirs, extracted_files in os.walk(extract_to):
+                        for extracted_file in extracted_files:
+                            if extracted_file.endswith('.pdf') or extracted_file.endswith('.xml'):
+                                # move file
+                                shutil.move(os.path.join(extracted_root, extracted_file),
+                                            os.path.join(directory_path,
+                                                         extracted_file))
+                    # remove extra folder
+                    shutil.rmtree(extract_to)
+                    # remove file zip
+                    os.remove(zip_file)
 
 
 util_rpa = UtilRpa()

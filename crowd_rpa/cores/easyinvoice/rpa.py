@@ -1,10 +1,15 @@
+import os
 import time
 import logging
 from abc import ABC
+from pathlib import Path
 
-from crowd_rpa.utils.rpa_util import util_rpa
 from driver import WebDriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
+
+from crowd_rpa.utils.rpa_util import util_rpa
 from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.easyinvoice.constant import easy_invoice_constant
 
@@ -13,56 +18,38 @@ class EasyInvoiceRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
 
-    def get_portal(self):
-        url = ""
-        path = easy_invoice_constant.FILE_PATH
-        if path.endswith(".pdf"):
-            url = util_rpa.read_pdf(path, easy_invoice_constant.URL_KEYWORD,
-                                    easy_invoice_constant.CODE_BILL_KEYWORD)
-        elif path.endswith(".xml"):
-            url = util_rpa.read_xml(path, easy_invoice_constant.URL_KEYWORD)
+    def extract_data(self, portal, lookup_code, storage_pth, filename):
+        return self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename)
 
-        return url
-
-    def get_code_lookup(self):
-        code_bill = ""
-        path = easy_invoice_constant.FILE_PATH
-        if path.endswith(".pdf"):
-            code_bill = util_rpa.read_pdf(path, easy_invoice_constant.CODE_BILL_KEYWORD,
-                                          easy_invoice_constant.LAST_KEYWORD)
-        elif path.endswith(".xml"):
-            code_bill = util_rpa.read_xml(path, easy_invoice_constant.CODE_BILL_KEYWORD)
-        return code_bill
-
-    def check_invoice(self):
-        return None
-
-    def extract_data(self):
-        self.process_download_xml_pdf()
-
-    def get_driver(self):
-        return WebDriver(tag=self.driver_name)()
+    def get_driver(self, download_directory=None, more_option=False):
+        return WebDriver(tag=self.driver_name, download_directory=download_directory,
+                         more_option=more_option)()
 
     def get_name(self):
         return easy_invoice_constant.META_DATA['RPA_NAME']
 
-    def process_download_xml_pdf(self):
+    def process_download_xml_pdf(self, portal, lookup_code, storage_pth, filename):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
-        # Maximize the browser window to full screen
-        browser = self.get_driver()
+        portal_pth = os.path.join(storage_pth, easy_invoice_constant.CORE_NAME)
+        if not Path(portal_pth).is_dir():
+            os.mkdir(portal_pth)
+        save_pth = os.path.join(portal_pth, filename)
+        if not Path(save_pth):
+            os.mkdir(save_pth)
+        browser = self.get_driver(save_pth, True)
         # Thực hiện các thay đổi sau khi đã tạo đối tượng WebDriver
         browser.maximize_window()
         logging.info(f'{self.get_name()}: Please wait .. ({easy_invoice_constant.DELAY_OPEN_MAXIMUM_BROWSER}s)')
         time.sleep(easy_invoice_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         # Open a website
-        logging.info(f'{self.get_name()}: Open a website: {self.get_portal()}')
-        browser.get(self.get_portal())
+        logging.info(f'{self.get_name()}: Open a website: {portal}')
+        browser.get(portal)
         time.sleep(easy_invoice_constant.DELAY_TIME_LOAD_PAGE)
         logging.info(f'{self.get_name()}: Please wait .. ({easy_invoice_constant.DELAY_TIME_LOAD_PAGE}s)')
         # Enter id
         logging.info(f'{self.get_name()}: Enter id')
         id_input = browser.find_element(By.ID, easy_invoice_constant.ID_INPUT_BY_ID_TYPE)
-        id_input.send_keys(self.get_code_lookup())
+        id_input.send_keys(lookup_code)
         # Enter captcha
         util_rpa.enter_captcha(self.get_name(), browser, By.ID, By.ID,
                                easy_invoice_constant.CAPTCHA_IMG_BY_ID_TYPE,
@@ -73,18 +60,28 @@ class EasyInvoiceRpa(IRpa, ABC):
         # Download file pdf
         logging.info(f'{self.get_name()}: Download pdf')
         download_pdf_btn = browser.find_element(By.XPATH, easy_invoice_constant.DOWNLOAD_PDF_XPATH)
+        wait = WebDriverWait(browser, easy_invoice_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
+        wait.until(ec.presence_of_element_located((By.XPATH, easy_invoice_constant.DOWNLOAD_PDF_XPATH)))
         download_pdf_btn.click()
         logging.info(f'{self.get_name()}: Please wait .. ({easy_invoice_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE}s)')
         time.sleep(easy_invoice_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
         # Download file xml
         logging.info(f'{self.get_name()}: Download xml')
         download_xml_btn = browser.find_element(By.XPATH, easy_invoice_constant.DOWNLOAD_XML_XPATH)
+        wait = WebDriverWait(browser, easy_invoice_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
+        wait.until(ec.presence_of_element_located((By.XPATH, easy_invoice_constant.DOWNLOAD_XML_XPATH)))
         download_xml_btn.click()
         logging.info(f'{self.get_name()}: Please wait .. ({easy_invoice_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE}s)')
         time.sleep(easy_invoice_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
+        # extra zip
+        directory_path = f"{storage_pth}/{self.get_name()}/{self.get_name().lower()}"
+        util_rpa.extract_zip_files_and_keep_specific_files(directory_path)
+        time.sleep(easy_invoice_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
+
         # Close rpa
-        browser.quit()
+        browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
+        return save_pth
 
     def versions(self) -> dict:
         return easy_invoice_constant.VERSIONS
@@ -98,7 +95,9 @@ class EasyInvoiceRpa(IRpa, ABC):
 
 easy_invoice_ins = EasyInvoiceRpa(easy_invoice_constant.META_DATA)
 
-
 if __name__ == '__main__':
-    easy_invoice_ins.extract_data()
+    easy_invoice_ins.extract_data("https://0401356807hd.easyinvoice.com.vn",
+                                  "V6B3X7S70412674213298690",
+                                  r"D:\RainScales\crowd_rpa\tests\output",
+                                  "test")
     easy_invoice_ins.reset()

@@ -2,7 +2,7 @@ import re
 import fitz
 import tldextract
 
-from cores import providers
+from crowd_rpa.cores import providers
 from settings import cfg
 
 
