@@ -2,7 +2,7 @@ import re
 import fitz
 import tldextract
 
-from cores import providers
+from crowd_rpa.cores import providers
 from settings import cfg
 
 
@@ -26,7 +26,8 @@ def find_lookup_code_in_pdf(pdf_path):
         r'Mã tra cứu: (\w+)',
         r'\(Invoice code\):\s*([A-Z0-9]+)',
         r'Mã tra cứu HĐĐT này: (\w+)',
-        r'mã tra cứu:\s*([A-Z0-9]+)'
+        r'mã tra cứu:\s*([A-Z0-9]+)',
+        r' Mã số tra cứu:\s*([A-Z0-9]+)'
     ]
 
     for page in doc:

@@ -66,7 +66,8 @@ class WebDriver:
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("start-maximized")
         chrome_options.page_load_strategy = "normal"
-        prefs = {"download.default_directory": download_directory}
+        prefs = {"download.default_directory": download_directory, "safebrowsing.enabled": "false",
+                 "safebrowsing.disable_download_protection": "true"}
         chrome_options.add_experimental_option("prefs", prefs)
 
         driver = webdriver.Chrome(options=chrome_options)

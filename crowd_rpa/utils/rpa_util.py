@@ -9,6 +9,8 @@ import numpy as np
 from PIL import Image
 import xml.etree.ElementTree as ET
 
+from easyocr import easyocr
+
 
 class UtilRpa:
     @staticmethod
