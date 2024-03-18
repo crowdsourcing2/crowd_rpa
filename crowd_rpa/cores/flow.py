@@ -137,9 +137,9 @@ class CollectorFlow:
 
 if __name__ == '__main__':
     metadata = {
-        'root_pth': r"D:\RainScales\crowd_rpa\tests\data",
+        'root_pth': r"D:\HoaiThu_Nam4\THUCTAP\crowd_rpa\tests\data",
         'data': {},
-        'storage_pth': r'D:\RainScales\crowd_rpa\tests\output'
+        'storage_pth': r'D:\HoaiThu_Nam4\THUCTAP\crowd_rpa\tests\output'
     }
     c = CollectorFlow()
     o = c.infer_flow(metadata)
