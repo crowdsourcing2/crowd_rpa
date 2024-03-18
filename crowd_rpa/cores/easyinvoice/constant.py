@@ -1,15 +1,7 @@
-from os.path import join
-
-from settings import cfg
-
-
 class EasyInvoiceConstant:
     FILE_PATH = './RPA_TEMP/easyinvoice.xml'
     URL_KEYWORD = 'PortalLink'  # tag name contains data
-    # URL_KEYWORD = 'Trang tra cứu:'
     CODE_BILL_KEYWORD = 'Key'
-    # CODE_BILL_KEYWORD = 'Mã tra cứu:'
-    # LAST_KEYWORD = '(Cần kiểm tra, đối chiếu khi lập, giao, nhận hóa đơn)'
 
     FORM_BY_ID_TYPE = 'Search'
     ID_INPUT_BY_ID_TYPE = 'iFkey'
@@ -40,5 +32,6 @@ class EasyInvoiceConstant:
     DELAY_CLICK_DOWNLOAD_EVERY_FILE = 2
     DELAY_TIME_SKIP = 1
     RETRY_MAX = 5
+
 
 easy_invoice_constant = EasyInvoiceConstant()
