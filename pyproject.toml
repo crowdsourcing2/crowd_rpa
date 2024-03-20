@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "crowd-rpa"
-version = "0.1.0"
+version = "1.1.0"
 description = ""
 authors = ["wd Yang <wdyang97@gmail.com>"]
 readme = "README.md"
@@ -14,8 +14,10 @@ webdriver-manager = "^4.0.1"
 colorlog = "^6.8.0"
 opencv-python = "^4.9.0.80"
 numpy = "^1.26.3"
-easyocr = "^1.7.1"
 pymupdf = "^1.23.26"
+tldextract = "^5.1.1"
+xmltodict = "^0.13.0"
+pyyaml = "^6.0.1"
 
 
 [build-system]

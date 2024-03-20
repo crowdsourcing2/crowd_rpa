@@ -1,14 +1,9 @@
-import os
-import pathlib
-
 import undetected_chromedriver as uc
 
 from selenium import webdriver
 from selenium_stealth import stealth
-from urllib3.util import url
 from webdriver_manager.firefox import GeckoDriverManager
 
-from settings import cfg
 
 try:
     gecko_pth = "./geckodriver"
@@ -24,7 +19,7 @@ class WebDriver:
         elif tag == "chrome":
             self._driver = self.make_stealth(self.google_chrome(download_directory, more_option))
         elif tag == "undetected_chrome":
-            self._driver = self.make_stealth(self.undetected_chrome())
+            self._driver = self.make_stealth(self.undetected_chrome(download_directory))
         elif tag == "browser_stack":
             self._driver = self.browser_stack()
 
@@ -45,13 +40,17 @@ class WebDriver:
         return driver
 
     @staticmethod
-    def undetected_chrome():
+    def undetected_chrome(download_directory=None):
         options = uc.ChromeOptions()
-        # options.headless = True
-        # options.add_argument('--headless')
+        options.headless = True
+        options.add_argument('--headless')
+        prefs = {"download.default_directory": download_directory}
+        options.add_experimental_option("prefs", prefs)
         options.arguments.extend(["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])  # << this
 
         chrome = uc.Chrome(options=options)
+        chrome.implicitly_wait(1)
+
         return chrome
 
     @staticmethod
@@ -59,7 +58,7 @@ class WebDriver:
         from selenium.webdriver.chrome.options import Options
 
         chrome_options = Options()
-        # chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument("--profile-directory=Default")

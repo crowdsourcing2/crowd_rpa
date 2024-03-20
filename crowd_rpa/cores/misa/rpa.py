@@ -7,7 +7,7 @@ from pathlib import Path
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
-from driver import WebDriver
+from crowd_rpa.driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.misa.constant import misa_constant
@@ -20,7 +20,7 @@ class MisaRpa(IRpa, ABC):
     def extract_data(self, portal, lookup_code, storage_pth, filename):
         return self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename)
 
-    def get_driver(self, download_directory=None):
+    def get_driver(self, download_directory=None, more_option=False):
         return WebDriver(tag=self.driver_name, download_directory=download_directory)()
 
     def get_name(self):
@@ -28,7 +28,7 @@ class MisaRpa(IRpa, ABC):
 
     def process_download_xml_pdf(self, portal, lookup_code, storage_pth, filename):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
-        portal_pth = os.path.join(storage_pth, misa_constant.CORE_NAME)
+        portal_pth = os.path.join(storage_pth, misa_constant.CORE_NAME.lower())
         if not Path(portal_pth).is_dir():
             os.mkdir(portal_pth)
         save_pth = os.path.join(portal_pth, filename)
@@ -51,14 +51,17 @@ class MisaRpa(IRpa, ABC):
         download_btn = browser.find_element(By.CLASS_NAME, misa_constant.DOWNLOAD_BTN_BY_CLASS_TYPE)
         wait = WebDriverWait(browser, misa_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
         wait.until(ec.presence_of_element_located((By.XPATH, misa_constant.DOWNLOAD_PDF_XPATH)))
+        browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         download_btn.click()
         logging.info(f'{self.get_name()}: Please wait .. ({misa_constant.DELAY_TIME_SKIP}s)')
         time.sleep(misa_constant.DELAY_TIME_SKIP)
         logging.info(f'{self.get_name()}: Download pdf')
         download_pdf = browser.find_element(By.XPATH, misa_constant.DOWNLOAD_PDF_XPATH)
+        browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         download_pdf.click()
         logging.info(f'{self.get_name()}: Please wait .. ({misa_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE}s)')
         time.sleep(misa_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
+        browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         download_btn.click()
         logging.info(f'{self.get_name()}: Please wait .. ({misa_constant.DELAY_TIME_SKIP}s)')
         time.sleep(misa_constant.DELAY_TIME_SKIP)
@@ -66,9 +69,16 @@ class MisaRpa(IRpa, ABC):
         download_xml = browser.find_element(By.XPATH, misa_constant.DOWNLOAD_XML_XPATH)
         wait = WebDriverWait(browser, misa_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
         wait.until(ec.presence_of_element_located((By.XPATH, misa_constant.DOWNLOAD_XML_XPATH)))
+        browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         download_xml.click()
         time.sleep(misa_constant.DELAY_TIME_SKIP)
-        browser.close()
+        try:
+            browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
+            browser.quit()
+            browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
+            browser.close()
+        except Exception as e:
+            print("Error occurred while quitting Chrome:", e)
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
         return save_pth
 

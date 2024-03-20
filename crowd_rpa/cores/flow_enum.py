@@ -9,7 +9,14 @@ class CollectorStatus(Enum):
     ERROR_CAPTCHA = 'ERROR_CAPTCHA'  # Khi mà portal mà có captcha mà ko xử lí đc
     ERROR = 'ERROR'  # Something went wrong
     SUBMITTED = 'SUBMITTED'  # qua hết step đúng
-    SUBMITTED_ERROR = 'SUBMITTED_ERROR'
+    SUBMITTED_ERROR = "SUBMITTED_ERROR"
+
+
+class ExtractorStatus(Enum):
+    INVALID_MONEY = 'INVALID_MONEY'
+    PARSER_ERROR = 'PARSER_ERROR'
+    XML_NOT_FOUND = 'XML_NOT_FOUND'
+    SUBMITTED = 'SUBMITTED'
 
 
 class ProcessStatus(Enum):
@@ -20,7 +27,5 @@ class ProcessStatus(Enum):
 class FlowName(Enum):
     GET_PORTAL = 'GET_PORTAL'
     LOOKUP_INFO = 'LOOKUP_INFO'
-    INVOICE = 'INVOICE'
     DOWNLOAD_INFO = 'DOWNLOAD_INFO'
     SUBMITTED = 'SUBMITTED'
-

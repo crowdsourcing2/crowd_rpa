@@ -1,7 +1,7 @@
 import time
 import logging
 from abc import ABC
-from driver import WebDriver
+from crowd_rpa.driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.wininvoice.constant import wininvoice_constant

@@ -1,7 +1,3 @@
-from os.path import join
-
-from settings import cfg
-
 class BkavConstant:
     IFRAME_BY_ID = 'frameViewInvoice'
     PATH_PDF_FILE ='./RPA_TEMP/BKAV.pdf'

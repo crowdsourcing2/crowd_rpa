@@ -12,7 +12,7 @@ class MisaConstant:
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,
-        'DRIVER_NAME': 'chrome'
+        'DRIVER_NAME': 'undetected_chrome'
 
     }
     VERSIONS = {
@@ -23,7 +23,7 @@ class MisaConstant:
     }
     LATEST_VERSION = 'v1'
     DELAY_OPEN_MAXIMUM_BROWSER = 0.2
-    DELAY_TIME_LOAD_PAGE = 3
+    DELAY_TIME_LOAD_PAGE = 5
     DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5
     DELAY_TIME_SKIP = 5
 

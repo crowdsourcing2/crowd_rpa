@@ -4,11 +4,13 @@ import logging
 from abc import ABC
 from pathlib import Path
 
-from driver import WebDriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
+
+from crowd_rpa.settings import cfg
+from crowd_rpa.driver import WebDriver
 from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.bkav.constant import bkav_constant
-from selenium.common.exceptions import TimeoutException
 
 
 class BkavRpa(IRpa, ABC):
@@ -18,7 +20,7 @@ class BkavRpa(IRpa, ABC):
     def extract_data(self, portal, lookup_code, storage_pth, filename):
         return self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename)
 
-    def get_driver(self, download_directory=None,  more_option=False):
+    def get_driver(self, download_directory=None, more_option=False):
         return WebDriver(tag=self.driver_name, download_directory=download_directory, more_option=more_option)()
 
     def get_name(self):
@@ -26,7 +28,7 @@ class BkavRpa(IRpa, ABC):
 
     def process_download_xml_pdf(self, portal, lookup_code, storage_pth, filename):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
-        portal_pth = os.path.join(storage_pth, bkav_constant.CORE_NAME)
+        portal_pth = os.path.join(storage_pth, bkav_constant.CORE_NAME.lower())
         if not Path(portal_pth).is_dir():
             os.mkdir(portal_pth)
         save_pth = os.path.join(portal_pth, filename)
@@ -80,10 +82,9 @@ class BkavRpa(IRpa, ABC):
 
 bkav_ins = BkavRpa(bkav_constant.META_DATA)
 
-
 if __name__ == '__main__':
     bkav_ins.extract_data("https://tracuu.ehoadon.vn",
                           "Y88TPVQF501",
-                          r"D:\HoaiThu_Nam4\THUCTAP\crowd_rpa\tests\output",
+                          cfg.TEST_ROOT_PTH,
                           "test")
     bkav_ins.reset()

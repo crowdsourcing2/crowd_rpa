@@ -1,8 +1,3 @@
-from os.path import join
-
-from settings import cfg
-
-
 class EvatConstant:
     FILE_PATH = './RPA_TEMP/evat.pdf'
     URL_KEYWORD = 'tra cứu trực tuyến tại '

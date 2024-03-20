@@ -1,14 +1,17 @@
 import time
 import logging
 from abc import ABC
-from driver import WebDriver
+from crowd_rpa.driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.vnpt.constant import vnpt_constant
 from crowd_rpa.utils.rpa_util import util_rpa
+
+
 class VnptRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
+
     def get_portal(self):
         url = ""
         path = vnpt_constant.FILE_PATH
@@ -29,8 +32,6 @@ class VnptRpa(IRpa, ABC):
             code_bill = util_rpa.read_xml(path, vnpt_constant.CODE_BILL_KEYWORD)
         return code_bill
 
-    def check_invoice(self):
-        return None
     def extract_data(self):
         logging.info(f'{self.get_name()}: Start extracting data')
         self.process_download_xml_pdf()
@@ -40,6 +41,7 @@ class VnptRpa(IRpa, ABC):
 
     def get_name(self):
         return vnpt_constant.META_DATA['RPA_NAME']
+
     def enter_id(self,browser):
         id_input = browser.find_element(By.NAME, "strFkey")
         id_input.send_keys(self.get_code_lookup())

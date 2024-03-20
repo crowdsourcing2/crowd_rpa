@@ -1,8 +1,5 @@
-import os
+from os.path import join, dirname
 import yaml
-import tldextract
-
-from pathlib import Path
 
 
 def load_config(file_path):
@@ -29,7 +26,8 @@ class Config:
     SCALE_WIDTH_DEFAULT = 800
     COOKIE_EXPIRY_DAYS = 30
     MASTER_TOOLS_LOGO = "https://cdn-icons-png.flaticon.com/512/807/807262.png"
-    PORTALS_CONFIG = load_config(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'portal_config.yaml'))
+    PORTALS_CONFIG = load_config(join(dirname(__file__), 'portal_config.yaml'))
+    TEST_ROOT_PTH = join(join(dirname(dirname(__file__)), 'tests'), 'output')
 
 
 cfg = Config()

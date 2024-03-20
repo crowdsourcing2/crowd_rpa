@@ -1,8 +1,3 @@
-from os.path import join
-
-from settings import cfg
-
-
 class WininvoiceConstant:
     #ADD
     FILE_PATH = './RPA_TEMP/Wininvoice.pdf'

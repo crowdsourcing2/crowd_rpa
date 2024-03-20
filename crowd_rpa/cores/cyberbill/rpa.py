@@ -3,22 +3,23 @@ import time
 import logging
 from abc import ABC
 from pathlib import Path
-from driver import WebDriver
 
 from selenium.webdriver.common.by import By
-
-from crowd_rpa.utils.rpa_util import util_rpa
-from crowd_rpa.interfaces.rpa_interface import IRpa
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+
+from crowd_rpa.settings import cfg
+from crowd_rpa.driver import WebDriver
+from crowd_rpa.utils.rpa_util import util_rpa
+from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.cyberbill.constant import cyber_bill_constant
 
 
-class CyberbillRpa(IRpa, ABC):
+class CyberBillRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
 
-    def extract_data(self, portal, lookup_code, storage_pth, filename):
+    def extract_data(self, portal: str, lookup_code: str, storage_pth: str, filename: str):
         return self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename)
 
     def get_driver(self, download_directory=None, more_option=False):
@@ -29,7 +30,7 @@ class CyberbillRpa(IRpa, ABC):
 
     def process_download_xml_pdf(self, portal, lookup_code, storage_pth, filename):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
-        portal_pth = os.path.join(storage_pth, cyber_bill_constant.CORE_NAME)
+        portal_pth = os.path.join(storage_pth, cyber_bill_constant.CORE_NAME.lower())
         if not Path(portal_pth).is_dir():
             os.mkdir(portal_pth)
         save_pth = os.path.join(portal_pth, filename)
@@ -86,11 +87,11 @@ class CyberbillRpa(IRpa, ABC):
         }
 
 
-cyberbill_ins = CyberbillRpa(cyber_bill_constant.META_DATA)
+cyber_bill_ins = CyberBillRpa(cyber_bill_constant.META_DATA)
 
 if __name__ == '__main__':
-    cyberbill_ins.extract_data("https://tracuu.cyberbill.vn",
+    cyber_bill_ins.extract_data("https://tracuu.cyberbill.vn",
                                "2E2EYBV8S3AG",
-                               r"D:\HoaiThu_Nam4\THUCTAP\crowd_rpa\tests\output",
+                               cfg.TEST_ROOT_PTH,
                                "test")
-    cyberbill_ins.reset()
+    cyber_bill_ins.reset()

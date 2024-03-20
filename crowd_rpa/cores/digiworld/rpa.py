@@ -4,7 +4,7 @@ import logging
 from abc import ABC
 from pathlib import Path
 
-from driver import WebDriver
+from crowd_rpa.driver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -12,6 +12,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from crowd_rpa.utils.rpa_util import util_rpa
 from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.digiworld.constant import digi_world_constant
+from crowd_rpa.settings import cfg
 
 
 class DigiWorldRpa(IRpa, ABC):
@@ -31,7 +32,7 @@ class DigiWorldRpa(IRpa, ABC):
     def process_download_xml_pdf(self, portal, lookup_code, storage_pth, filename):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
         # Maximize the browser window to full screen
-        portal_pth = os.path.join(storage_pth, digi_world_constant.CORE_NAME)
+        portal_pth = os.path.join(storage_pth, digi_world_constant.CORE_NAME.lower())
         if not Path(portal_pth).is_dir():
             os.mkdir(portal_pth)
         save_pth = os.path.join(portal_pth, filename)
@@ -95,10 +96,10 @@ class DigiWorldRpa(IRpa, ABC):
 
 digi_world_ins = DigiWorldRpa(digi_world_constant.META_DATA)
 
+
 if __name__ == '__main__':
     digi_world_ins.extract_data("https://hddt78.digiworld.com.vn",
                                 "13231232184PD2B",
-                                r"D:\RainScales\crowd_rpa\tests\output",
+                                cfg.TEST_ROOT_PTH,
                                 "test")
-
     digi_world_ins.reset()

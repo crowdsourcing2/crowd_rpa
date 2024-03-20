@@ -1,8 +1,3 @@
-from os.path import join
-
-from settings import cfg
-
-
 class ThaiSonConstant:
     FILE_PATH = './RPA_TEMP/thaison.pdf'
     # URL_KEYWORD = 'PortalLink'  # tag name contains data

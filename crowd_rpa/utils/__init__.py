@@ -1,6 +1,5 @@
 import logging
 from colorlog import ColoredFormatter
-from crowd_rpa.api import make_collector, make_extractor
 
 # Configure the logging settings with color
 formatter = ColoredFormatter(
@@ -21,4 +20,4 @@ handler.setFormatter(formatter)
 
 logger = logging.getLogger()
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)  # Set the logging level
+logger.setLevel(logging.DEBUG)  # Set the logging level

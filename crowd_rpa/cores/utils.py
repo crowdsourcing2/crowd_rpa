@@ -1,9 +1,11 @@
+import os
 import re
 import fitz
+import xmltodict
 import tldextract
 
 from crowd_rpa.cores import providers
-from settings import cfg
+from crowd_rpa.settings import cfg
 
 
 def find_links_in_pdf(pdf_path):
@@ -12,7 +14,7 @@ def find_links_in_pdf(pdf_path):
 
     for page in doc:
         links += re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                           page.get_text())
+                            page.get_text())
         for link in page.get_links():
             links.append(link.get("uri"))
     doc.close()
@@ -66,11 +68,35 @@ def get_portal_module(portal):
     return instance
 
 
-if __name__ == '__main__':
-    # pdf_path = r"C:\Users\phduo\Downloads\crowd_electronic\evat.pdf"
-    # links = find_lookup_code_in_pdf(pdf_path)
-    # print("Links below the threshold on page", links)
-    input_domain = "https://tracuu.evat.vn/"
-    portal_name = get_portal_router(input_domain)
-    ins = get_portal_module(portal_name)
-    print(ins.get_name())
+def is_valid_download_info(storage_pth):
+    files = os.listdir(storage_pth)
+    count = 0
+    memories = []
+    pdf = '.pdf'
+    xml = '.xml'
+    for file in files:
+        if file.lower().endswith(pdf) and pdf not in memories:
+            count += 1
+            memories.append(pdf)
+        if file.lower().endswith(xml) and xml not in memories:
+            count += 1
+            memories.append(xml)
+    return count == 2
+
+
+def read_xml_file(file_path, encoding='utf-8'):
+    try:
+        with open(file_path, 'r', encoding=encoding) as file:
+            xml_data = file.read()
+        return xml_data
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}")
+        return None
+    except Exception as e:
+        print(f"Error reading file: {e}")
+        return None
+
+
+def xml_to_json(xml_string):
+    xml_dict = xmltodict.parse(xml_string)
+    return xml_dict

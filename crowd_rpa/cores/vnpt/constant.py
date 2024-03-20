@@ -1,8 +1,3 @@
-from os.path import join
-
-from settings import cfg
-
-
 class VnptConstant:
     FILE_PATH = './RPA_TEMP/VNPT.pdf'
     # URL_KEYWORD = 'PortalLink'  # tag name contains data

@@ -2,7 +2,7 @@ import time
 import multiprocessing as mp
 import concurrent.futures as cf
 
-from settings import cfg
+from crowd_rpa.settings import cfg
 from multiprocessing import Lock
 
 

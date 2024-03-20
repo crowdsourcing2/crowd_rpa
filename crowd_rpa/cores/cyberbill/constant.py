@@ -1,8 +1,3 @@
-from os.path import join
-
-from settings import cfg
-
-
 class CyberBillConstant:
     INPUT_ID_BY_NAME ='MaSoBiMat'
     PATH_PDF_FILE ='./RPA_TEMP/cyberbill.pdf'
