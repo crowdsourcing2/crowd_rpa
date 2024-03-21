@@ -22,9 +22,9 @@ class BkavConstant:
     }
     LATEST_VERSION = 'v1'
     DELAY_OPEN_MAXIMUM_BROWSER = 0.2
-    DELAY_TIME_LOAD_PAGE = 3
+    DELAY_TIME_LOAD_PAGE = 5
     DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5
-    DELAY_TIME_SKIP = 1
+    DELAY_TIME_SKIP = 5
 
 
 bkav_constant = BkavConstant()
