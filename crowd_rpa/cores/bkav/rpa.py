@@ -44,6 +44,13 @@ class BkavRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Open a website: {portal}')
         time.sleep(bkav_constant.DELAY_TIME_LOAD_PAGE)
         logging.info(f'{self.get_name()}: Please wait .. ({bkav_constant.DELAY_TIME_LOAD_PAGE}s)')
+        # Enter lookup code
+        logging.info(f'{self.get_name()}: Enter lookup code')
+        input_id = browser.find_element(By.CLASS_NAME, bkav_constant.INPUT_ID)
+        input_id.send_keys(lookup_code)
+        btn_search = browser.find_element(By.ID, bkav_constant.BUTTON_SEARCH_BY_ID)
+        btn_search.click()
+        time.sleep(bkav_constant.DELAY_TIME_LOAD_PAGE)
         try:
             iframe = browser.find_element(By.ID, bkav_constant.IFRAME_BY_ID)
             browser.get(iframe.get_attribute('src'))
