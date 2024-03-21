@@ -1,5 +1,7 @@
 import re
 import os
+from datetime import datetime
+
 import cv2
 import time
 import fitz
@@ -11,6 +13,8 @@ import numpy as np
 from PIL import Image
 from io import BytesIO
 import xml.etree.ElementTree as et
+
+from crowd_rpa.settings import cfg
 
 
 class UtilRpa:
@@ -97,13 +101,24 @@ class UtilRpa:
             logging.info(f'{name}: Please wait .. ({delay_time_skip}s)')
             time.sleep(delay_time_skip)
             # Check error captcha
+            current_date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            captcha_name = f"captcha_{current_date}.png"
             try:
                 browser.find_element(result_captcha_by, value_result_captcha)
-                retry += 1
-                if callback is not None:
-                    callback(*callback_args)
+                save_path = os.path.join(cfg.IMG_CAPTCHA_ROOT_PTH + "/no_pass_captcha", captcha_name)
+                cv2.imwrite(save_path, np.array(cropped_image))
+                # retry += 1
+                # if callback is not None:
+                #     callback(*callback_args)
             except Exception as e:
-                break
+                save_dir = cfg.IMG_CAPTCHA_ROOT_PTH + "/" + name
+                if not os.path.exists(save_dir):
+                    os.makedirs(save_dir)
+                save_path = os.path.join(save_dir, captcha_name)
+                cv2.imwrite(save_path, np.array(cropped_image))
+                callback(*callback_args)
+                # break
+
 
     @staticmethod
     def extract_zip_files_and_keep_specific_files(directory_path):
