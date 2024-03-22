@@ -57,7 +57,9 @@ class EasyInvoiceRpa(IRpa, ABC):
                                easy_invoice_constant.CAPTCHA_INPUT_BY_ID_TYPE,
                                By.ID, easy_invoice_constant.FORM_BY_ID_TYPE, By.CLASS_NAME,
                                easy_invoice_constant.ERROR_ALERT_BY_CLASS_TYPE, easy_invoice_constant.RETRY_MAX,
-                               easy_invoice_constant.DELAY_TIME_SKIP, check_num=True)
+                               easy_invoice_constant.DELAY_TIME_SKIP, check_num=True,
+                               callback=self.process_download_xml_pdf,
+                               callback_args=[portal, lookup_code, storage_pth, filename])
         # Download file pdf
         logging.info(f'{self.get_name()}: Download pdf')
         download_pdf_btn = browser.find_element(By.XPATH, easy_invoice_constant.DOWNLOAD_PDF_XPATH)

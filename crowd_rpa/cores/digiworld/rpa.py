@@ -48,16 +48,19 @@ class DigiWorldRpa(IRpa, ABC):
         time.sleep(digi_world_constant.DELAY_TIME_LOAD_PAGE)
         logging.info(f'{self.get_name()}: Please wait .. ({digi_world_constant.DELAY_TIME_LOAD_PAGE}s)')
         # Enter id
-        id_input = browser.find_element(By.ID, digi_world_constant.ID_INPUT_BY_ID_TYPE)
-        id_input.send_keys(lookup_code)
-        logging.info(f'{self.get_name()}: Enter id')
+        # id_input = browser.find_element(By.ID, digi_world_constant.ID_INPUT_BY_ID_TYPE)
+        # id_input.send_keys(lookup_code)
+        # logging.info(f'{self.get_name()}: Enter id')
         # Enter captcha
         util_rpa.enter_captcha(self.get_name(), browser, By.CLASS_NAME, By.ID,
                                digi_world_constant.CAPTCHA_IMG_BY_CLASS_TYPE,
                                digi_world_constant.CAPTCHA_INPUT_BY_ID_TYPE,
                                By.ID, digi_world_constant.FORM_BY_ID_TYPE, By.XPATH,
                                digi_world_constant.ERROR_ALERT_BY_XPATH, digi_world_constant.RETRY_MAX,
-                               digi_world_constant.DELAY_TIME_SKIP, check_num=True)
+                               digi_world_constant.DELAY_TIME_SKIP, check_num=True,
+                               callback=self.process_download_xml_pdf,
+                               callback_args=[portal, lookup_code, storage_pth, filename]
+                               )
         # Open view detail
         logging.info(f'{self.get_name()}: Open view detail')
         view_btn = browser.find_element(By.XPATH, digi_world_constant.VIEW_BTN_BY_XPATH)

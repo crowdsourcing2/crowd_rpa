@@ -56,7 +56,10 @@ class CyberBillRpa(IRpa, ABC):
                                cyber_bill_constant.CAPTCHA_INPUT_BY_XPATH, By.XPATH,
                                cyber_bill_constant.BUTTON_SEARCH_BY_XPATH, By.CLASS_NAME,
                                cyber_bill_constant.ERROR_ALERT_BY_CLASS, cyber_bill_constant.RETRY_MAX,
-                               cyber_bill_constant.DELAY_TIME_SKIP, check_num=True)
+                               cyber_bill_constant.DELAY_TIME_SKIP, check_num=True,
+                               callback=self.process_download_xml_pdf,
+                               callback_args=[portal, lookup_code, storage_pth, filename])
+
         time.sleep(cyber_bill_constant.DELAY_TIME_SKIP)
         time.sleep(cyber_bill_constant.DELAY_TIME_SKIP)
         logging.info(f'{self.get_name()}: Download PDF')
@@ -91,7 +94,7 @@ cyber_bill_ins = CyberBillRpa(cyber_bill_constant.META_DATA)
 
 if __name__ == '__main__':
     cyber_bill_ins.extract_data("https://tracuu.cyberbill.vn",
-                               "2E2EYBV8S3AG",
-                               cfg.TEST_ROOT_PTH,
-                               "test")
+                                "2E2EYBV8S3AG",
+                                cfg.TEST_ROOT_PTH,
+                                "test")
     cyber_bill_ins.reset()
