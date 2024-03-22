@@ -28,6 +28,7 @@ class Config:
     MASTER_TOOLS_LOGO = "https://cdn-icons-png.flaticon.com/512/807/807262.png"
     PORTALS_CONFIG = load_config(join(dirname(__file__), 'portal_config.yaml'))
     TEST_ROOT_PTH = join(join(dirname(dirname(__file__)), 'tests'), 'output')
+    IMG_CAPTCHA_DIR = join(join(dirname(dirname(__file__)), 'tests'), 'img_captcha')
 
 
 cfg = Config()

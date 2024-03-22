@@ -7,6 +7,7 @@ from pathlib import Path
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
+from crowd_rpa.settings import cfg
 from crowd_rpa.driver import WebDriver
 from selenium.webdriver.common.by import By
 from crowd_rpa.interfaces.rpa_interface import IRpa
@@ -98,7 +99,7 @@ misa_ins = MisaRpa(misa_constant.META_DATA)
 if __name__ == '__main__':
     misa_ins.extract_data("https://www.meinvoice.vn/tra-cuu/",
                           "W8T2F353A8D",
-                          r"C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\output",
+                          cfg.TEST_ROOT_PTH,
                           "test")
 
     misa_ins.reset()

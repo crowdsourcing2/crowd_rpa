@@ -12,7 +12,7 @@ class MisaConstant:
     META_DATA = {
         'URL': URL,
         'RPA_NAME': CORE_NAME,
-        'DRIVER_NAME': 'undetected_chrome'
+        'DRIVER_NAME': 'chrome'
 
     }
     VERSIONS = {
