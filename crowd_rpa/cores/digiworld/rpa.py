@@ -75,7 +75,7 @@ class DigiWorldRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Please wait .. ({digi_world_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE}s)')
         time.sleep(digi_world_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
         # extra zip
-        directory_path = f"{storage_pth}/{self.get_name().lower()}/test"
+        directory_path = f"{storage_pth}/{self.get_name().lower()}/{filename}"
         util_rpa.extract_zip_files_and_keep_specific_files(directory_path)
         time.sleep(digi_world_constant.DELAY_TIME_SKIP)
 
