@@ -24,10 +24,11 @@ class EvatConstant:
     }
 
     LATEST_VERSION = 'v1'
-    DELAY_OPEN_MAXIMUM_BROWSER = 0.2
+    DELAY_OPEN_MAXIMUM_BROWSER = 3
     DELAY_TIME_LOAD_PAGE = 3
     DELAY_CLICK_DOWNLOAD_EVERY_FILE = 2
     DELAY_TIME_SKIP = 1
+    USE_COMPANY_CODE = True
 
 
 evat_constant = EvatConstant()

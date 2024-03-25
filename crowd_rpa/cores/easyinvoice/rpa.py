@@ -18,7 +18,7 @@ class EasyInvoiceRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
 
-    def extract_data(self, portal, lookup_code, storage_pth, filename):
+    def extract_data(self, portal, lookup_code, storage_pth, filename, company_code=None):
         return self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename)
 
     def get_driver(self, download_directory=None, more_option=False):

@@ -93,7 +93,7 @@ class WininvoiceRpa(IRpa, ABC):
         download_btn.click()
         logging.info(f'{self.get_name()}: Clicked the "Download" button.')
         time.sleep(wininvoice_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
-        browser.quit()
+        browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
 
     def versions(self) -> dict:

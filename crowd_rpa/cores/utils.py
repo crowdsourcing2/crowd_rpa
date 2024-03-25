@@ -24,15 +24,7 @@ def find_links_in_pdf(pdf_path):
 def find_lookup_code_in_pdf(pdf_path):
     doc = fitz.open(pdf_path)
     code = None
-    code_patterns = [
-        r'Mã tra cứu: (\w+)',
-        r'\(Invoice code\):\s*([A-Z0-9]+)',
-        r'Mã tra cứu HĐĐT này: (\w+)',
-        r'mã tra cứu:\s*([A-Z0-9]+)',
-        r'Mã nhận hóa đơn :\s*([A-Z0-9]+)',
-        r' Mã số tra cứu: \s*([A-Z0-9]+)'
-
-    ]
+    code_patterns = cfg.LOOKUP_PATTERNS
 
     for page in doc:
         for pattern in code_patterns:
@@ -72,16 +64,12 @@ def is_valid_download_info(storage_pth):
     files = os.listdir(storage_pth)
     count = 0
     memories = []
-    pdf = '.pdf'
     xml = '.xml'
     for file in files:
-        if file.lower().endswith(pdf) and pdf not in memories:
-            count += 1
-            memories.append(pdf)
         if file.lower().endswith(xml) and xml not in memories:
             count += 1
             memories.append(xml)
-    return count == 2
+    return count == 1
 
 
 def read_xml_file(file_path, encoding='utf-8'):
@@ -100,3 +88,21 @@ def read_xml_file(file_path, encoding='utf-8'):
 def xml_to_json(xml_string):
     xml_dict = xmltodict.parse(xml_string)
     return xml_dict
+
+
+def find_company_code_in_pdf(pdf_path):
+    doc = fitz.open(pdf_path)
+    code = None
+    code_patterns = cfg.COMPANY_PATTERNS
+    for page in doc:
+        for pattern in code_patterns:
+            temp = re.search(pattern, page.get_text())
+            if temp:
+                code = temp.group(1)
+    doc.close()
+    return code
+
+
+if __name__ == '__main__':
+    print(find_lookup_code_in_pdf(r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\data\evat.pdf'))
+

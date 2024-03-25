@@ -19,7 +19,7 @@ class IRpa:
         raise NotImplementedError
 
     @abstractmethod
-    def extract_data(self, portal, lookup_code, storage_pth, filename):
+    def extract_data(self, portal, lookup_code, storage_pth, filename, company_code=None):
         raise NotImplementedError
 
     @abstractmethod

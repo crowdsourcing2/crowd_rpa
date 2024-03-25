@@ -106,7 +106,7 @@ class RosySoftRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Please wait .. ({rosysoft_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE}s)')
         time.sleep(rosysoft_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
 
-        browser.quit()
+        browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
 
     def versions(self) -> dict:

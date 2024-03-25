@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 from copy import deepcopy
 
@@ -7,15 +8,18 @@ from crowd_rpa.cores.flow_enum import ProcessStatus, FlowName, CollectorStatus
 
 class CollectorFlow:
     GET_PORTAL = 0
-    LOOKUP_INFO = 1
-    DOWNLOAD_INFO = 2
-    SUBMITTED = 3
+    LOOKUP_INFO = GET_PORTAL + 1
+    COMPANY_CODE = LOOKUP_INFO + 1
+    DOWNLOAD_INFO = COMPANY_CODE + 1
+    SUBMITTED = DOWNLOAD_INFO + 1
     _FLOW = [
         GET_PORTAL,
         LOOKUP_INFO,
+        COMPANY_CODE,
         DOWNLOAD_INFO,
         SUBMITTED
     ]
+    SUCCESS = 'SUCCESS'
     _METADATA = {
         'root_pth': '/',
         'data': {},
@@ -29,7 +33,7 @@ class CollectorFlow:
     }
 
     def __init__(self):
-        self.steps = [self.get_portal, self.lookup_code, self.download_info, self.submit]
+        self.steps = [self.get_portal, self.lookup_code, self.company_code, self.download_info, self.submit]
         self.config = None
         self._val = None
         self._storage_pth = None
@@ -39,25 +43,32 @@ class CollectorFlow:
         self._val = None
         self._storage_pth = None
 
+    def set_step(self, flow_type, status, step_val, in_step, msg):
+        self.config['data'][self._val]['status'] = status
+        self.config['data'][self._val]['steps'][flow_type] = step_val
+        self.config['data'][self._val]['in_step'] = in_step
+        self.config['data'][self._val]['message'] = msg
+
     def get_portal(self):
         next_step = True
         try:
             url = find_links_in_pdf(
                 f'{self.config["root_pth"]}/{self._val}')
-            self.config['data'][self._val]['steps'][self.GET_PORTAL] = url
-            self.config['data'][self._val]['in_step'] = FlowName.GET_PORTAL.value
             self.config['data'][self._val]['portal'] = get_portal_router(url)
+            self.set_step(flow_type=self.GET_PORTAL,
+                          status=FlowName.GET_PORTAL.value,
+                          step_val=url,
+                          in_step=FlowName.GET_PORTAL.value,
+                          msg=self.SUCCESS)
             if not get_portal_router(input_domain=url):
                 next_step = False
-            self.config['data'][self._val]['message'] = 'SUCCESS'
 
         except Exception as e:
-            self.config['data'][self._val]['status'] = CollectorStatus.NF_PORTAL.value
-            self.config['data'][self._val]['steps'][self.GET_PORTAL] = None
-            self.config['data'][self._val]['in_step'] = FlowName.GET_PORTAL.value
-            self.config['data'][self._val]['portal'] = None
-            self.config['data'][self._val]['message'] = e
-
+            self.set_step(flow_type=self.GET_PORTAL,
+                          status=CollectorStatus.NF_PORTAL.value,
+                          step_val=None,
+                          in_step=FlowName.GET_PORTAL.value,
+                          msg=e)
             next_step = False
 
         return next_step
@@ -67,18 +78,51 @@ class CollectorFlow:
         try:
             code = find_lookup_code_in_pdf(
                 f'{self.config["root_pth"]}/{self._val}')
-            self.config['data'][self._val]['steps'][self.LOOKUP_INFO] = code
-            self.config['data'][self._val]['in_step'] = FlowName.LOOKUP_INFO.value
             if not code:
-                next_step = False
-            self.config['data'][self._val]['message'] = 'SUCCESS'
+                raise ValueError('Lookup code is not found')
+            self.set_step(flow_type=self.LOOKUP_INFO,
+                          status=FlowName.LOOKUP_INFO.value,
+                          step_val=code,
+                          in_step=FlowName.LOOKUP_INFO.value,
+                          msg=self.SUCCESS)
+
         except Exception as e:
-            self.config['data'][self._val]['status'] = CollectorStatus.NF_LOOKUP_INFO.value
-            self.config['data'][self._val]['steps'][self.LOOKUP_INFO] = None
-            self.config['data'][self._val]['in_step'] = FlowName.LOOKUP_INFO.value
-            self.config['data'][self._val]['message'] = e
+            self.set_step(flow_type=self.LOOKUP_INFO,
+                          status=CollectorStatus.NF_LOOKUP_INFO.value,
+                          step_val=None,
+                          in_step=FlowName.LOOKUP_INFO.value,
+                          msg=e.__str__())
             next_step = False
 
+        return next_step
+
+    def company_code(self):
+        next_step = True
+        try:
+            instance = get_portal_module(self.config['data'][self._val]['portal'])
+            if not hasattr(instance, cfg.USE_COMPANY_CODE_ATTR):
+                self.set_step(flow_type=self.COMPANY_CODE,
+                              status=FlowName.COMPANY_CODE.value,
+                              step_val=None,
+                              in_step=FlowName.COMPANY_CODE.value,
+                              msg=self.SUCCESS)
+                return next_step
+            code = find_company_code_in_pdf(
+                f'{self.config["root_pth"]}/{self._val}')
+            self.set_step(flow_type=self.COMPANY_CODE,
+                          status=FlowName.GET_PORTAL,
+                          step_val=code,
+                          in_step=FlowName.LOOKUP_INFO.value,
+                          msg=self.SUCCESS)
+            if not code:
+                next_step = False
+        except Exception as e:
+            self.set_step(flow_type=self.COMPANY_CODE,
+                          status=CollectorStatus.NF_LOOKUP_INFO.value,
+                          step_val=None,
+                          in_step=FlowName.LOOKUP_INFO.value,
+                          msg=e.__str__())
+            next_step = False
         return next_step
 
     def download_info(self):
@@ -89,26 +133,32 @@ class CollectorFlow:
             storage_path = instance.extract_data(self.config['data'][self._val]['steps'][self.GET_PORTAL],
                                                  self.config['data'][self._val]['steps'][self.LOOKUP_INFO],
                                                  self.config['storage_pth'],
-                                                 self._val.split('.')[0])
+                                                 self._val.split('.')[0],
+                                                 self.config['data'][self._val]['steps'][self.COMPANY_CODE])
             instance.reset()
             if not is_valid_download_info(storage_path):
                 raise ValueError("Downloaded files are incomplete")
-            self.config['data'][self._val]['steps'][self.DOWNLOAD_INFO] = storage_path
-            self.config['data'][self._val]['in_step'] = FlowName.DOWNLOAD_INFO.value
-            self.config['data'][self._val]['message'] = 'SUCCESS'
+            self.set_step(flow_type=self.DOWNLOAD_INFO,
+                          status=FlowName.DOWNLOAD_INFO.value,
+                          step_val=storage_path,
+                          in_step=FlowName.DOWNLOAD_INFO.value,
+                          msg=self.SUCCESS)
 
         except Exception as e:
-            self.config['data'][self._val]['status'] = CollectorStatus.INVALID_DOWNLOAD_INFO.value
-            self.config['data'][self._val]['steps'][self.DOWNLOAD_INFO] = None
-            self.config['data'][self._val]['in_step'] = FlowName.DOWNLOAD_INFO.value
-            self.config['data'][self._val]['message'] = e
-
+            self.set_step(flow_type=self.COMPANY_CODE,
+                          status=CollectorStatus.INVALID_DOWNLOAD_INFO.value,
+                          step_val=None,
+                          in_step=FlowName.DOWNLOAD_INFO.value,
+                          msg=e.__str__())
             next_step = False
         return next_step
 
     def submit(self):
-        self.config['data'][self._val]['steps'][self.SUBMITTED] = 'SUBMITTED'
-        self.config['data'][self._val]['in_step'] = FlowName.SUBMITTED.value
+        self.set_step(flow_type=self.SUBMITTED,
+                      status=FlowName.SUBMITTED.value,
+                      step_val=self.SUCCESS,
+                      in_step=FlowName.SUBMITTED.value,
+                      msg=self.SUCCESS)
         next_step = True
         return next_step
 
@@ -126,6 +176,7 @@ class CollectorFlow:
         self.config = deepcopy(meta_data)
 
         for d in data:
+            t = time.time()
             index = eval(f"self.{data[d]['in_step']}")
             if index > 0:
                 start_idx = index
@@ -135,6 +186,8 @@ class CollectorFlow:
                 self._val = d
                 if not step():
                     break
+            time.sleep(1)
+            self.config['data'][self._val]['time_process'] = f'{round(time.time() - t, 2)}s'
 
         return self.config
 

@@ -81,7 +81,7 @@ class VnptRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Please wait .. ({vnpt_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE}s)')
         time.sleep(vnpt_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
         # Close rpa
-        browser.quit()
+        browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
 
     def versions(self) -> dict:

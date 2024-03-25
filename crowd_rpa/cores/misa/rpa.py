@@ -18,7 +18,7 @@ class MisaRpa(IRpa, ABC):
     def __init__(self, meta_data):
         super().__init__(meta_data)
 
-    def extract_data(self, portal, lookup_code, storage_pth, filename):
+    def extract_data(self, portal, lookup_code, storage_pth, filename, company_code=None):
         return self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename)
 
     def get_driver(self, download_directory=None, more_option=False):
@@ -73,13 +73,7 @@ class MisaRpa(IRpa, ABC):
         browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         download_xml.click()
         time.sleep(misa_constant.DELAY_TIME_SKIP)
-        try:
-            browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
-            browser.quit()
-            browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
-            browser.close()
-        except Exception as e:
-            print("Error occurred while quitting Chrome:", e)
+        browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
         return save_pth
 

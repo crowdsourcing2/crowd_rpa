@@ -27,5 +27,6 @@ class ProcessStatus(Enum):
 class FlowName(Enum):
     GET_PORTAL = 'GET_PORTAL'
     LOOKUP_INFO = 'LOOKUP_INFO'
+    COMPANY_CODE = 'COMPANY_CODE'
     DOWNLOAD_INFO = 'DOWNLOAD_INFO'
     SUBMITTED = 'SUBMITTED'

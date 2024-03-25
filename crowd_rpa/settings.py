@@ -29,6 +29,22 @@ class Config:
     PORTALS_CONFIG = load_config(join(dirname(__file__), 'portal_config.yaml'))
     TEST_ROOT_PTH = join(join(dirname(dirname(__file__)), 'tests'), 'output')
     IMG_CAPTCHA_DIR = join(join(dirname(dirname(__file__)), 'tests'), 'img_captcha')
+    LOOKUP_PATTERNS = [
+        r'Mã tra cứu: (\w+)',
+        r'\(Invoice code\):\s*([A-Z0-9]+)',
+        r'Mã tra cứu HĐĐT này: (\w+)',
+        r'mã tra cứu:\s*([A-Z0-9]+)',
+        r'Mã nhận hóa đơn :\s*([A-Z0-9]+)',
+        r' Mã số tra cứu: \s*([A-Z0-9]+)',
+        r'mã tra cứu: \s*([A-Z0-9]+)'
+
+    ]
+    COMPANY_PATTERNS = [
+        r'mã công ty: \s*([A-Z0-9]+)',
+        r'mã công ty: (\d+)',
+        r' mã công ty: (\d+)'
+    ]
+    USE_COMPANY_CODE_ATTR = 'USE_COMPANY_CODE'
 
 
 cfg = Config()

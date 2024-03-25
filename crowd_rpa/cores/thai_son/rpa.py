@@ -77,7 +77,7 @@ class ThaiSonRpa(IRpa, ABC):
         download_zip.click()
         logging.info(f'{self.get_name()}: Please wait .. ({thai_son_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE}s)')
         time.sleep(thai_son_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
-        browser.quit()
+        browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
 
     def versions(self) -> dict:

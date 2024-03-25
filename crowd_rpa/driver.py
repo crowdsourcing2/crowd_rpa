@@ -36,7 +36,7 @@ class WebDriver:
                 renderer="Intel Iris OpenGL Engine",
                 fix_hairline=True,
                 )
-        driver.implicitly_wait(2)
+        driver.implicitly_wait(1)
         return driver
 
     @staticmethod
@@ -56,7 +56,6 @@ class WebDriver:
     @staticmethod
     def google_chrome(download_directory=None, more_option: bool = False):
         from selenium.webdriver.chrome.options import Options
-
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
