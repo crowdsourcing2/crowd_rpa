@@ -5,7 +5,7 @@ class MisaConstant:
     LAST_KEYWORD = 'Mã CQT: '
 
     DOWNLOAD_BTN_BY_CLASS_TYPE = 'download-invoice'
-    DOWNLOAD_PDF_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div'
+    DOWNLOAD_PDF_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div[1]'
     DOWNLOAD_XML_XPATH = '//*[@id="popup-content-container"]/div[1]/div[2]/div[12]/div/div/div[2]'
     URL = None
     CORE_NAME = 'MISA'
@@ -22,7 +22,7 @@ class MisaConstant:
         }
     }
     LATEST_VERSION = 'v1'
-    DELAY_OPEN_MAXIMUM_BROWSER = 0.2
+    DELAY_OPEN_MAXIMUM_BROWSER = 1
     DELAY_TIME_LOAD_PAGE = 5
     DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5
     DELAY_TIME_SKIP = 5

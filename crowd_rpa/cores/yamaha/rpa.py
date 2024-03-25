@@ -85,7 +85,7 @@ class YamahaRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Please wait .. ({yamaha_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE}s)')
         time.sleep(yamaha_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
         # extra zip
-        directory_path = f"{storage_pth}/{self.get_name().lower()}/test"
+        directory_path = f"{storage_pth}/{self.get_name().lower()}/{filename}"
         util_rpa.extract_zip_files_and_keep_specific_files(directory_path)
         time.sleep(yamaha_constant.DELAY_TIME_SKIP)
 
@@ -106,10 +106,9 @@ class YamahaRpa(IRpa, ABC):
 
 yamaha_ins = YamahaRpa(yamaha_constant.META_DATA)
 
-
 if __name__ == '__main__':
     yamaha_ins.extract_data("https://einvoice78.yamaha-motor.com.vn",
-                                "EINV21142346",
-                                cfg.TEST_ROOT_PTH,
-                                "test")
+                            "EINV21142346",
+                            cfg.TEST_ROOT_PTH,
+                            "test")
     yamaha_ins.reset()
