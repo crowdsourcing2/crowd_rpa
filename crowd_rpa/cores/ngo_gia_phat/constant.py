@@ -12,15 +12,16 @@ class NgoGiaPhatConstant:
 
     FORM_BY_ID_TYPE = 'ASPxButton_search_CD'
     IMG_CAPTCHA_BY_XPATH = '//*[@id="ASPxCaptcha_search_IMG"]'
-
+    INPUT_SUBMIT_BY_XPATH = '//*[@id="ASPxButton_search_I"]'
     TEXT_BOX_BY_CLASS_TYPE = 'form-control'
     TEXT_BOX_CAPTCHA_BY_ID = 'ASPxCaptcha_search_TB_I'
 
-    INPUT_BY_XPATH_ID = '//*[@id="ASPxTextBox_search"]//input'
-    BUTTON_FIND_BILL_XPATH = '//*[@id="ASPxCaptcha_search_TB_I"]'
+    TEXT_BOX_BY_XPATH = '//*[@id="ASPxTextBox_search"]//input'
     TEXT_BOX_CAPTCHA_BY_XPATH = '//*[@id="ASPxCaptcha_search_TB_I"]'
-    BUTTON_DOWNLOAD_BY_XPATH = '//*[@id="ASPxPageControlSearch_ASPxFormLayoutListGTGT_ASPxButton_Download_CD"]//span'
-    ERROR_ALERT_BY_XPATH = '//*[@id="messagewrapper"]/div'
+    BUTTON_FIND_BILL_XPATH = '//*[@id="ASPxCaptcha_search_TB_I"]'
+    BUTTON_DOWNLOAD_BY_XPATH = '//*[@id="ASPxPageControlSearch_ASPxFormLayoutListGTGT_ASPxButton_Download_CD"]'
+    ERROR_ALERT_BY_XPATH = '/html/body/div[2]'
+
     DOWNLOAD_PDF_BY_XPATH = '//*[@class="table"]/tbody/tr/td[11]/a/i'
     VIEW_BTN_BY_XPATH = '//*[@class="table"]/tbody/tr/td[10]/a'
 
