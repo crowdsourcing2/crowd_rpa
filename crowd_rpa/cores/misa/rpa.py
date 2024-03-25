@@ -49,6 +49,7 @@ class MisaRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Open a website: {url}')
         time.sleep(misa_constant.DELAY_TIME_LOAD_PAGE)
         logging.info(f'{self.get_name()}: Please wait .. ({misa_constant.DELAY_TIME_LOAD_PAGE}s)')
+        # Click download btn
         download_btn = browser.find_element(By.CLASS_NAME, misa_constant.DOWNLOAD_BTN_BY_CLASS_TYPE)
         wait = WebDriverWait(browser, misa_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
         wait.until(ec.presence_of_element_located((By.CLASS_NAME, misa_constant.DOWNLOAD_BTN_BY_CLASS_TYPE)))
@@ -56,6 +57,7 @@ class MisaRpa(IRpa, ABC):
         browser.execute_script("arguments[0].click();", download_btn)
         logging.info(f'{self.get_name()}: Please wait .. ({misa_constant.DELAY_TIME_SKIP}s)')
         time.sleep(misa_constant.DELAY_TIME_SKIP)
+        # Download PDF
         logging.info(f'{self.get_name()}: Download pdf')
         download_pdf = browser.find_element(By.XPATH, misa_constant.DOWNLOAD_PDF_XPATH)
         browser.implicitly_wait(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
@@ -66,6 +68,7 @@ class MisaRpa(IRpa, ABC):
         browser.execute_script("arguments[0].click();", download_btn)
         logging.info(f'{self.get_name()}: Please wait .. ({misa_constant.DELAY_TIME_SKIP}s)')
         time.sleep(misa_constant.DELAY_TIME_SKIP)
+        # Download XML
         logging.info(f'{self.get_name()}: Download XML')
         download_xml = browser.find_element(By.XPATH, misa_constant.DOWNLOAD_XML_XPATH)
         wait = WebDriverWait(browser, misa_constant.DELAY_CLICK_DOWNLOAD_EVERY_FILE)
