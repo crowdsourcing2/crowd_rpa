@@ -41,7 +41,7 @@ class MisaRpa(IRpa, ABC):
         logging.info(f'{self.get_name()}: Please wait .. ({misa_constant.DELAY_OPEN_MAXIMUM_BROWSER}s)')
         time.sleep(misa_constant.DELAY_OPEN_MAXIMUM_BROWSER)
         # Open a website
-        domain_lookup_code = '?sc=' + lookup_code
+        domain_lookup_code = '/tra-cuu?sc=' + lookup_code
         url = portal
         if not portal.endswith(domain_lookup_code):
             url += domain_lookup_code

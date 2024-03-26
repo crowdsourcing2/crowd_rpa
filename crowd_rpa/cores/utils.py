@@ -4,6 +4,7 @@ import fitz
 import xmltodict
 import tldextract
 
+from urllib.parse import urlparse
 from crowd_rpa.cores import providers
 from crowd_rpa.settings import cfg
 
@@ -13,12 +14,17 @@ def find_links_in_pdf(pdf_path):
     links = []
 
     for page in doc:
-        links += re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                            page.get_text())
-        for link in page.get_links():
-            links.append(link.get("uri"))
+        for tbox in page.get_text_blocks():
+            link = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+                              tbox[4])
+            out_box = list(tbox)
+            if len(link) > 0:
+                out_box[4] = max(link, key=lambda x: len(x))
+                links += [out_box]
+
     doc.close()
-    return max(links, key=lambda x: len(x))
+    link = max(links, key=lambda x: x[3])
+    return extract_base_url(link[4])
 
 
 def find_lookup_code_in_pdf(pdf_path):
@@ -103,6 +109,13 @@ def find_company_code_in_pdf(pdf_path):
     return code
 
 
-if __name__ == '__main__':
-    print(find_lookup_code_in_pdf(r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\data\evat.pdf'))
+def extract_base_url(url):
+    if url.endswith('.'):
+        return url[:-1]
+    parsed_url = urlparse(url)
+    base_url = parsed_url.scheme + "://" + parsed_url.netloc
+    return base_url
 
+
+if __name__ == '__main__':
+    print(find_links_in_pdf(r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\data1\misa.pdf'))

@@ -80,7 +80,7 @@ class LotteMartRpa(IRpa, ABC):
         time.sleep(lottemart_constant.DELAY_TIME_SKIP)
         browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
-        return save_pth
+        return directory_path
 
     def versions(self) -> dict:
         return lottemart_constant.VERSIONS

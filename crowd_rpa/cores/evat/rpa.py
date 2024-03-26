@@ -35,7 +35,7 @@ class EvatRpa(IRpa, ABC):
         return evat_constant.META_DATA['RPA_NAME']
 
     def extract_data(self, portal, lookup_code, storage_pth, filename, company_code=None):
-        self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename, company_code)
+        return self.process_download_xml_pdf(portal, lookup_code, storage_pth, filename, company_code)
 
     def process_download_xml_pdf(self, portal, lookup_code, storage_pth, filename, company_code):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
@@ -70,9 +70,11 @@ class EvatRpa(IRpa, ABC):
         view_button2.click()
         time.sleep(evat_constant.DELAY_TIME_SKIP)
         src_pth = join(storage_pth, evat_constant.CORE_NAME.lower())
-        util_rpa.extract_zip_files_and_keep_specific_files(join(src_pth, filename))
+        save_pth = join(src_pth, filename)
+        util_rpa.extract_zip_files_and_keep_specific_files(save_pth)
         browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
+        return save_pth
 
     def versions(self) -> dict:
         return evat_constant.VERSIONS
@@ -82,6 +84,10 @@ class EvatRpa(IRpa, ABC):
             'version': evat_constant.LATEST_VERSION,
             'info': evat_constant.VERSIONS[evat_constant.LATEST_VERSION]
         }
+
+    @staticmethod
+    def use_company_code():
+        return evat_constant.USE_COMPANY_CODE
 
 
 evat_ins = EvatRpa(evat_constant.META_DATA)

@@ -27,7 +27,7 @@ class CollectorFlow:
     }
     _ITEM = {
         'status': ProcessStatus.CREATE.value,
-        'time_process': {},
+        'time_process': 0,
         'steps': _FLOW,
         'in_step': 'GET_PORTAL',
     }
@@ -68,7 +68,7 @@ class CollectorFlow:
                           status=CollectorStatus.NF_PORTAL.value,
                           step_val=None,
                           in_step=FlowName.GET_PORTAL.value,
-                          msg=e)
+                          msg=e.__str__())
             next_step = False
 
         return next_step
@@ -100,7 +100,7 @@ class CollectorFlow:
         next_step = True
         try:
             instance = get_portal_module(self.config['data'][self._val]['portal'])
-            if not hasattr(instance, cfg.USE_COMPANY_CODE_ATTR):
+            if not hasattr(instance, cfg.USE_COMPANY_CODE_ATTR.lower()):
                 self.set_step(flow_type=self.COMPANY_CODE,
                               status=FlowName.COMPANY_CODE.value,
                               step_val=None,
@@ -110,17 +110,17 @@ class CollectorFlow:
             code = find_company_code_in_pdf(
                 f'{self.config["root_pth"]}/{self._val}')
             self.set_step(flow_type=self.COMPANY_CODE,
-                          status=FlowName.GET_PORTAL,
+                          status=FlowName.COMPANY_CODE.value,
                           step_val=code,
-                          in_step=FlowName.LOOKUP_INFO.value,
+                          in_step=FlowName.COMPANY_CODE.value,
                           msg=self.SUCCESS)
             if not code:
-                next_step = False
+                raise ValueError(CollectorStatus.NF_COMPANY_CODE.value)
         except Exception as e:
             self.set_step(flow_type=self.COMPANY_CODE,
-                          status=CollectorStatus.NF_LOOKUP_INFO.value,
+                          status=CollectorStatus.NF_COMPANY_CODE.value,
                           step_val=None,
-                          in_step=FlowName.LOOKUP_INFO.value,
+                          in_step=FlowName.COMPANY_CODE.value,
                           msg=e.__str__())
             next_step = False
         return next_step
@@ -145,7 +145,7 @@ class CollectorFlow:
                           msg=self.SUCCESS)
 
         except Exception as e:
-            self.set_step(flow_type=self.COMPANY_CODE,
+            self.set_step(flow_type=self.DOWNLOAD_INFO,
                           status=CollectorStatus.INVALID_DOWNLOAD_INFO.value,
                           step_val=None,
                           in_step=FlowName.DOWNLOAD_INFO.value,

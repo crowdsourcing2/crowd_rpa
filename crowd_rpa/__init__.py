@@ -16,9 +16,16 @@ formatter = ColoredFormatter(
     }
 )
 
+# Get the root logger
+logger = logging.getLogger()
+
+# Remove any existing handlers to avoid duplication
+logger.handlers.clear()
+
+# Set the logging level
+logger.setLevel(logging.INFO)
+
+# Add a new handler with the specified formatter
 handler = logging.StreamHandler()
 handler.setFormatter(formatter)
-
-logger = logging.getLogger()
 logger.addHandler(handler)
-logger.setLevel(logging.INFO)  # Set the logging level

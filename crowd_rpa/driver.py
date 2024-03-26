@@ -40,16 +40,20 @@ class WebDriver:
         return driver
 
     @staticmethod
-    def undetected_chrome(download_directory=None):
+    def undetected_chrome(download_directory=None, more_option=False):
         options = uc.ChromeOptions()
         options.headless = True
         options.add_argument('--headless')
         prefs = {"download.default_directory": download_directory}
         options.add_experimental_option("prefs", prefs)
         options.arguments.extend(["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])  # << this
-
+        if more_option:
+            prefs = {"download.default_directory": download_directory, "safebrowsing.enabled": "false",
+                     "safebrowsing.disable_download_protection": "true"}
+        else:
+            prefs = {"download.default_directory": download_directory}
+        options.add_experimental_option("prefs", prefs)
         chrome = uc.Chrome(options=options)
-        chrome.implicitly_wait(1)
 
         return chrome
 

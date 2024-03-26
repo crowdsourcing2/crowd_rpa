@@ -27,7 +27,7 @@ def update_in_step():
 def create_flow():
 
     metadata = {
-        'root_pth': r"C:\Users\phduo\Downloads\crowd_electronic",
+        'root_pth': r"C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\data1",
         'data': {},
         'storage_pth': r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\output'
     }
