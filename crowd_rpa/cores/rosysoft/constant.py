@@ -16,7 +16,6 @@ class RosySoftConstant:
     DOWNLOAD_PDF_XPATH = '//*[@class="row-fluid"]/div/div/article/div/div/div[2]/table/tbody/tr/td[2]/div/span[1]/img'
     DOWNLOAD_XML_XPATH = '//*[@class="row-fluid"]/div/div/article/div/div/div[2]/table/tbody/tr/td[2]/div/span[3]/img'
     URL = None
-    URL_N = 'https://einv.rosysoft.vn:8386/RSeInvoiceSearch'
     CORE_NAME = 'ROSYSOFT'
     META_DATA = {
         'URL': URL,
@@ -30,10 +29,11 @@ class RosySoftConstant:
         }
     }
     LATEST_VERSION = 'v1'
-    DELAY_OPEN_MAXIMUM_BROWSER = 0.2
-    DELAY_TIME_LOAD_PAGE = 1.5
-    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 1.5
-    DELAY_TIME_SKIP = 0.3
+    DELAY_OPEN_MAXIMUM_BROWSER = 1
+    DELAY_TIME_LOAD_PAGE = 5
+    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5
+    DELAY_TIME_SKIP = 5
+    USE_COMPANY_CODE = True
 
 
 rosysoft_constant = RosySoftConstant()
