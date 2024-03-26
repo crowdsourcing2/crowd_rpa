@@ -6,11 +6,11 @@ class ThaiSonConstant:
     CODE_BILL_KEYWORD = 'Mã tra cứu (Code):'
     LAST_KEYWORD = '(Cần kiểm tra, đối chiếu khi lập, giao nhận hóa đơn)'
 
-    MA_NHAN_HOA_DON_XPATH = '//*[@id="MA_NHAN_HOA_DON"]'
-    CAPTCHA_TEXT_XPATH = '//*[@id="CaptchaInputText"]'
-    CAPTCHA_IMG_XPATH = '//*[@id="CaptchaImage"]'
-    ERROR_XPATH = '//*[@id="listresult"]'
-    BTN_FORM_BY_XPATH_TYPE = '/html/body/div[1]/div[3]/form/div/div[1]/div[1]/div/div/div/div[4]/div[2]/button'
+    MA_NHAN_HOA_DON_ID = 'MA_NHAN_HOA_DON'
+    CAPTCHA_TEXT_ID = 'CaptchaInputText'
+    CAPTCHA_IMG_ID = 'CaptchaImage'
+    ERROR_ID = 'listresult'
+    FORM_BY_ID_TYPE = 'formgr'
     DOWNLOAD_ZIP_XPATH = '//*[@id="formgr"]/div/div/div[1]/div[1]/div/button[2]'
     URL = None
     CORE_NAME = 'THAI_SON'
@@ -26,11 +26,12 @@ class ThaiSonConstant:
         }
     }
     LATEST_VERSION = 'v1'
-    DELAY_OPEN_MAXIMUM_BROWSER = 0.2
-    DELAY_TIME_LOAD_PAGE = 3
-    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 2
-    DELAY_TIME_SKIP = 1
+    DELAY_OPEN_MAXIMUM_BROWSER = 1
+    DELAY_TIME_LOAD_PAGE = 5
+    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5
+    DELAY_TIME_SKIP = 5
     RETRY_MAX = 8
+    GROUP_PORTAL_EXTENSIONS = [[".thaison.vn", "einvoice-fbvn.fujifilm.com"]]
 
 
 thai_son_constant = ThaiSonConstant()
