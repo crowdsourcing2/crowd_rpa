@@ -1,8 +1,6 @@
 class VnptConstant:
     FILE_PATH = './RPA_TEMP/VNPT.pdf'
-    # URL_KEYWORD = 'PortalLink'  # tag name contains data
     URL_KEYWORD = 'Tra cứ u hóa đơn tại website:'
-    # CODE_BILL_KEYWORD = 'Fkey'
     CODE_BILL_KEYWORD = 'Mã tra cứu:'
     LAST_KEYWORD = 'Phí'
 
@@ -28,10 +26,11 @@ class VnptConstant:
         }
     }
     LATEST_VERSION = 'v1'
-    DELAY_OPEN_MAXIMUM_BROWSER = 0.2
-    DELAY_TIME_LOAD_PAGE = 3
-    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 3
-    DELAY_TIME_SKIP = 1
-    RETRY_MAX = 5
+    DELAY_OPEN_MAXIMUM_BROWSER = 2
+    DELAY_TIME_LOAD_PAGE = 5
+    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5
+    DELAY_TIME_SKIP = 5
+    RETRY_MAX = 8
+
 
 vnpt_constant = VnptConstant()

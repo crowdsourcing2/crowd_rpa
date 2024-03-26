@@ -1,6 +1,6 @@
 class EasyInvoiceConstant:
     FILE_PATH = './RPA_TEMP/easyinvoice.xml'
-    URL_KEYWORD = 'PortalLink'  # tag name contains data
+    URL_KEYWORD = 'PortalLink'
     CODE_BILL_KEYWORD = 'Key'
 
     FORM_BY_ID_TYPE = 'Search'
@@ -27,9 +27,9 @@ class EasyInvoiceConstant:
         }
     }
     LATEST_VERSION = 'v1'
-    DELAY_OPEN_MAXIMUM_BROWSER = 1
+    DELAY_OPEN_MAXIMUM_BROWSER = 2
     DELAY_TIME_LOAD_PAGE = 5
-    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 3
+    DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5
     DELAY_TIME_SKIP = 5
     RETRY_MAX = 5
 

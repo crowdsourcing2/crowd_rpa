@@ -1,9 +1,9 @@
 import os
 import time
 import logging
+
 from abc import ABC
 from pathlib import Path
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -73,6 +73,7 @@ class NgoGiaPhatRpa(IRpa, ABC):
 
         browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
+        return save_pth
 
     def versions(self) -> dict:
         return ngo_gia_phat_constant.VERSIONS
