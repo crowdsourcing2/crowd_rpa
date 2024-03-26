@@ -36,7 +36,8 @@ class Config:
         r'mã tra cứu:\s*([A-Z0-9]+)',
         r'Mã nhận hóa đơn :\s*([A-Z0-9]+)',
         r' Mã số tra cứu: \s*([A-Z0-9]+)',
-        r'mã tra cứu: \s*([A-Z0-9]+)'
+        r'mã tra cứu: \s*([A-Z0-9]+)',
+        r'Mã nhận hóa đơn: 41N4GCGP8 tra cứu tại: '
 
     ]
     COMPANY_PATTERNS = [
