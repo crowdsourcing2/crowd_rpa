@@ -61,6 +61,7 @@ class CyberBillRpa(IRpa, ABC):
         time.sleep(cyber_bill_constant.DELAY_TIME_SKIP)
         logging.info(f'{self.get_name()}: Download PDF')
         download_pdf = browser.find_element(By.XPATH, cyber_bill_constant.DOWNLOAD_PDF_XPATH)
+        # Click 4 lần mới tải được
         download_pdf.click()
         download_pdf.click()
         download_pdf.click()
@@ -91,7 +92,7 @@ cyber_bill_ins = CyberBillRpa(cyber_bill_constant.META_DATA)
 
 if __name__ == '__main__':
     cyber_bill_ins.extract_data("https://tracuu.cyberbill.vn",
-                               "2E2EYBV8S3AG",
-                               cfg.TEST_ROOT_PTH,
-                               "test")
+                                "2E2EYBV8S3AG",
+                                cfg.TEST_ROOT_PTH,
+                                "test")
     cyber_bill_ins.reset()

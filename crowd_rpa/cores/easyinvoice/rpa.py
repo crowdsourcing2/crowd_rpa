@@ -1,16 +1,15 @@
 import os
 import time
 import logging
+
 from abc import ABC
 from pathlib import Path
-
 from selenium.webdriver.common.by import By
 
 from crowd_rpa.settings import cfg
 from crowd_rpa.driver import WebDriver
 from crowd_rpa.utils.rpa_util import util_rpa
 from crowd_rpa.interfaces.rpa_interface import IRpa
-
 from crowd_rpa.cores.easyinvoice.constant import easy_invoice_constant
 
 

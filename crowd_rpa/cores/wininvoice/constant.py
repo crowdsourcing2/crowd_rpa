@@ -32,4 +32,4 @@ class WininvoiceConstant:
     DELAY_TIME_SKIP = 3
 
 
-wininvoice_constant = WininvoiceConstant()
+win_invoice_constant = WininvoiceConstant()
