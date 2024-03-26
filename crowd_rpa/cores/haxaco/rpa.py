@@ -1,9 +1,9 @@
 import os
 import time
 import logging
+
 from abc import ABC
 from pathlib import Path
-
 from selenium.webdriver.common.by import By
 
 from crowd_rpa.settings import cfg

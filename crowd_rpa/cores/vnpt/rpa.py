@@ -1,11 +1,14 @@
+import os
 import time
 import logging
+
 from abc import ABC
-from crowd_rpa.driver import WebDriver
 from selenium.webdriver.common.by import By
+from crowd_rpa.driver import WebDriver
+
+from crowd_rpa.utils.rpa_util import util_rpa
 from crowd_rpa.interfaces.rpa_interface import IRpa
 from crowd_rpa.cores.vnpt.constant import vnpt_constant
-from crowd_rpa.utils.rpa_util import util_rpa
 
 
 class VnptRpa(IRpa, ABC):
@@ -49,6 +52,12 @@ class VnptRpa(IRpa, ABC):
 
     def process_download_xml_pdf(self):
         logging.info(f'{self.get_name()}: Start process download xml & pdf')
+        portal_pth = os.path.join(storage_pth, rosysoft_constant.CORE_NAME.lower())
+        if not Path(portal_pth).is_dir():
+            os.mkdir(portal_pth)
+        save_pth = os.path.join(portal_pth, filename)
+        if not Path(save_pth):
+            os.mkdir(save_pth)
         browser = self.get_driver()
         browser.maximize_window()
         logging.info(f'{self.get_name()}: Please wait .. ({vnpt_constant.DELAY_OPEN_MAXIMUM_BROWSER}s)')
@@ -83,6 +92,7 @@ class VnptRpa(IRpa, ABC):
         # Close rpa
         browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
+        return save
 
     def versions(self) -> dict:
         return vnpt_constant.VERSIONS

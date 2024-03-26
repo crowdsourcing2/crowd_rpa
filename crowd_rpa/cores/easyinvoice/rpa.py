@@ -77,6 +77,7 @@ class EasyInvoiceRpa(IRpa, ABC):
         # Close rpa
         browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
+        return save_pth
 
     def versions(self) -> dict:
         return easy_invoice_constant.VERSIONS

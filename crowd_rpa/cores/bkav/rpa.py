@@ -1,11 +1,11 @@
 import os
 import time
 import logging
+
 from abc import ABC
 from pathlib import Path
-
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 
 from crowd_rpa.settings import cfg
 from crowd_rpa.driver import WebDriver

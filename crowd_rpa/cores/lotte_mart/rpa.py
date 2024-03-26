@@ -2,7 +2,6 @@ import os
 import time
 import logging
 
-
 from abc import ABC
 from pathlib import Path
 from selenium.webdriver.common.by import By
@@ -81,6 +80,7 @@ class LotteMartRpa(IRpa, ABC):
         time.sleep(lottemart_constant.DELAY_TIME_SKIP)
         browser.close()
         logging.info(f'{self.get_name()}: Finished process download xml & pdf')
+        return save_pth
 
     def versions(self) -> dict:
         return lottemart_constant.VERSIONS
