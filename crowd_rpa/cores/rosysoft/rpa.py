@@ -102,6 +102,10 @@ class RosySoftRpa(IRpa, ABC):
             'info': rosysoft_constant.VERSIONS[rosysoft_constant.LATEST_VERSION]
         }
 
+    @staticmethod
+    def use_company_code():
+        return rosysoft_constant.USE_COMPANY_CODE
+
 
 rosy_soft_ins = RosySoftRpa(rosysoft_constant.META_DATA)
 

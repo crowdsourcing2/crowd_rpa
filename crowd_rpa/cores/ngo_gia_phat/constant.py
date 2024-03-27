@@ -34,7 +34,7 @@ class NgoGiaPhatConstant:
     }
 
     LATEST_VERSION = 'v1'
-    RETRY_MAX = 8
+    RETRY_MAX = 10
     DELAY_OPEN_MAXIMUM_BROWSER = 2
     DELAY_TIME_LOAD_PAGE = 5
     DELAY_CLICK_DOWNLOAD_EVERY_FILE = 5

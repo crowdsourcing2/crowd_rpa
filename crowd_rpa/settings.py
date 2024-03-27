@@ -36,13 +36,15 @@ class Config:
         r'mã tra cứu:\s*([A-Z0-9]+)',
         r'Mã nhận hóa đơn :\s*([A-Z0-9]+)',
         r' Mã số tra cứu: \s*([A-Z0-9]+)',
-        r'mã tra cứu: \s*([A-Z0-9]+)'
-
+        r'mã tra cứu: \s*([A-Z0-9]+)',
+        r'Chuỗi xác thực \(Digest Value\): (.+)',
+        r'MTC: ([A-F0-9]+)'
     ]
     COMPANY_PATTERNS = [
         r'mã công ty: \s*([A-Z0-9]+)',
         r'mã công ty: (\d+)',
-        r' mã công ty: (\d+)'
+        r' mã công ty: (\d+)',
+        r'Mã số thuế \(Tax code\) : ([0-9 ]+)'
     ]
     USE_COMPANY_CODE_ATTR = 'USE_COMPANY_CODE'
 
