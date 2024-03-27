@@ -14,8 +14,9 @@ from crowd_rpa.cores.gas_petrolimex.rpa import gas_petrolimex_ins
 from crowd_rpa.cores.nacencomm.rpa import nacencomm_ins
 from crowd_rpa.cores.ngo_gia_phat.rpa import ngo_gia_phat_ins
 from crowd_rpa.cores.hilo.rpa import hilo_ins
+from crowd_rpa.cores.seasoft.rpa import sea_soft_ins
 
 
 providers = [bkav_ins, cyber_bill_ins, digi_world_ins, easy_invoice_ins, evat_ins, lotte_ins, misa_ins, rosy_soft_ins,
              thai_son_ins, vnpt_ins, win_invoice_ins, yamaha_ins, gas_petrolimex_ins, nacencomm_ins, ngo_gia_phat_ins,
-             hilo_ins]
+             hilo_ins, sea_soft_ins]
