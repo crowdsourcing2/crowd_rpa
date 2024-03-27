@@ -1,11 +1,23 @@
 portals:
   NCC:
+    gas_petrolimex:
+      name: "Gas Petrolimex"
+      domains:
+        - hoadon.pgas.vn
     misa:
       name: "Misa"
       domains:
         - .tcol.vn
         - skrtc.com
         - .meinvoice.vn
+    rosysoft:
+      name: "ROSYSOFT"
+      domains:
+        - .rosySoft.vn
+    haxaco:
+      name: "HAXACO"
+      domains:
+        - .haxaco.com.vn
     bkav:
       name: "BKAV"
       domains:
@@ -15,6 +27,10 @@ portals:
       domains:
         - .easyinvoice.vn
         - .easyinvoice.com.vn
+    lottemart:
+      name: "LOTTEMART"
+      domains:
+        - lottemart-bdg-tt78.vnpt-invoice.com.vn
     viettel:
       name: "VIETTEL"
       domains:
@@ -39,7 +55,7 @@ portals:
     vnpt:
       name: "VNPT"
       domains:
-        - .vnpt-invoice.com.vn
+        - tt78.vnpt-invoice.com.vn
         - .cathay-ins.com.vn:8440
         - einvoice.saigontourist.com.vn
         - invoice.longthanhgolfresort.com
@@ -53,7 +69,7 @@ portals:
       name: "M Invoice"
       domains:
           - .minvoice.com.vn
-    ngp:
+    ngogiaphat:
       name: "Ngô Gia Phát"
       domains:
         - .ngogiaphat.vn
@@ -75,7 +91,7 @@ portals:
     247_expess:
       name: "247 Expess"
       domains:
-        - .247express.vn/tra-cuu
+        - hoadon.247express.vn
     evn_invoice:
       name: "EVN Invoice"
       domains:
@@ -84,10 +100,6 @@ portals:
       name: "Yamaha"
       domains:
         - .yamaha-motor.com.vn
-    gas_petrolimex:
-      name: "Gas Petrolimex"
-      domains:
-        - hoadon.pgas.vn
     smart:
       name: "Smart"
       domains:

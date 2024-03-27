@@ -4,6 +4,7 @@ class RosySoftConstant:
     URL_KEYWORD = 'Trang tra cứu:'
     # CODE_BILL_KEYWORD = 'Key'
     CODE_BILL_KEYWORD = 'Mã tra cứu:'
+    COMPANY_KEYWORD = 'Mã số thuế (Tax code) :'
     LAST_KEYWORD = '(Cần kiểm tra, đối chiếu khi lập, giao nhận hóa đơn)'
 
     TAX_CODE_KEYWORD = 'Mã số thuế(Tax code):'
