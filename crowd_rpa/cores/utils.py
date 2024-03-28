@@ -46,6 +46,7 @@ def find_lookup_code_in_pdf(pdf_path):
             temp = re.search(pattern, page.get_text())
             if temp:
                 code = temp.group(1)
+                break
     doc.close()
     return code
 
@@ -127,4 +128,4 @@ def extract_base_url(url):
 
 
 if __name__ == '__main__':
-    print(find_lookup_code_in_pdf(r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\data1\Gas Petrolimex.pdf'))
+    print(find_lookup_code_in_pdf(r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\data1\lottemart.pdf'))

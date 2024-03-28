@@ -9,13 +9,13 @@ from crowd_rpa.cores.flow_enum import ProcessStatus, FlowName, CollectorStatus
 class CollectorFlow:
     GET_PORTAL = 0
     LOOKUP_INFO = GET_PORTAL + 1
-    COMPANY_CODE = LOOKUP_INFO + 1
-    DOWNLOAD_INFO = COMPANY_CODE + 1
+    ADDITIONAL_CODE = LOOKUP_INFO + 1
+    DOWNLOAD_INFO = ADDITIONAL_CODE + 1
     SUBMITTED = DOWNLOAD_INFO + 1
     _FLOW = [
         GET_PORTAL,
         LOOKUP_INFO,
-        COMPANY_CODE,
+        ADDITIONAL_CODE,
         DOWNLOAD_INFO,
         SUBMITTED
     ]
@@ -33,7 +33,7 @@ class CollectorFlow:
     }
 
     def __init__(self):
-        self.steps = [self.get_portal, self.lookup_code, self.company_code, self.download_info, self.submit]
+        self.steps = [self.get_portal, self.lookup_code, self.additional_code, self.download_info, self.submit]
         self.config = None
         self._val = None
         self._storage_pth = None
@@ -96,31 +96,31 @@ class CollectorFlow:
 
         return next_step
 
-    def company_code(self):
+    def additional_code(self):
         next_step = True
         try:
             instance = get_portal_module(self.config['data'][self._val]['portal'])
             if not hasattr(instance, cfg.USE_COMPANY_CODE_ATTR.lower()):
-                self.set_step(flow_type=self.COMPANY_CODE,
-                              status=FlowName.COMPANY_CODE.value,
+                self.set_step(flow_type=self.ADDITIONAL_CODE,
+                              status=FlowName.ADDITIONAL_CODE.value,
                               step_val=None,
-                              in_step=FlowName.COMPANY_CODE.value,
+                              in_step=FlowName.ADDITIONAL_CODE.value,
                               msg=self.SUCCESS)
                 return next_step
             code = find_company_code_in_pdf(
                 f'{self.config["root_pth"]}/{self._val}')
-            self.set_step(flow_type=self.COMPANY_CODE,
-                          status=FlowName.COMPANY_CODE.value,
+            self.set_step(flow_type=self.ADDITIONAL_CODE,
+                          status=FlowName.ADDITIONAL_CODE.value,
                           step_val=code,
-                          in_step=FlowName.COMPANY_CODE.value,
+                          in_step=FlowName.ADDITIONAL_CODE.value,
                           msg=self.SUCCESS)
             if not code:
-                raise ValueError(CollectorStatus.NF_COMPANY_CODE.value)
+                raise ValueError(CollectorStatus.NF_ADDITIONAL_CODE.value)
         except Exception as e:
-            self.set_step(flow_type=self.COMPANY_CODE,
-                          status=CollectorStatus.NF_COMPANY_CODE.value,
+            self.set_step(flow_type=self.ADDITIONAL_CODE,
+                          status=CollectorStatus.NF_ADDITIONAL_CODE.value,
                           step_val=None,
-                          in_step=FlowName.COMPANY_CODE.value,
+                          in_step=FlowName.ADDITIONAL_CODE.value,
                           msg=e.__str__())
             next_step = False
         return next_step
@@ -134,7 +134,7 @@ class CollectorFlow:
                                                  self.config['data'][self._val]['steps'][self.LOOKUP_INFO],
                                                  self.config['storage_pth'],
                                                  self._val.split('.')[0],
-                                                 self.config['data'][self._val]['steps'][self.COMPANY_CODE])
+                                                 self.config['data'][self._val]['steps'][self.ADDITIONAL_CODE])
             instance.reset()
             if not is_valid_download_info(storage_path):
                 raise ValueError("Downloaded files are incomplete")

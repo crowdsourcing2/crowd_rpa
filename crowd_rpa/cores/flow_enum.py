@@ -5,7 +5,7 @@ class CollectorStatus(Enum):
     NF_PORTAL = 'NF_PORTAL'  # Lấy đường dẫn tra cứu trong pdf
     NF_LOOKUP_INFO = 'NF_LOOKUP_INFO'  # Lấy mã tra cứu
     NF_INVOICE = 'NF_INVOICE'  # Lấy mã hóa đơn
-    NF_COMPANY_CODE = 'NF_COMPANY_CODE'
+    NF_ADDITIONAL_CODE = 'NF_ADDITIONAL_CODE'
     INVALID_DOWNLOAD_INFO = 'INVALID_DOWNLOAD_INFO'  # lấy xml và pdf
     ERROR_CAPTCHA = 'ERROR_CAPTCHA'  # Khi mà portal mà có captcha mà ko xử lí đc
     ERROR = 'ERROR'  # Something went wrong
@@ -28,6 +28,6 @@ class ProcessStatus(Enum):
 class FlowName(Enum):
     GET_PORTAL = 'GET_PORTAL'
     LOOKUP_INFO = 'LOOKUP_INFO'
-    COMPANY_CODE = 'COMPANY_CODE'
+    ADDITIONAL_CODE = 'COMPANY_CODE'
     DOWNLOAD_INFO = 'DOWNLOAD_INFO'
     SUBMITTED = 'SUBMITTED'
