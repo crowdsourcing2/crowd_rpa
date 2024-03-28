@@ -52,7 +52,7 @@ class UtilRpa:
     def enter_captcha(name, browser, captcha_find_by, input_result_captcha_by, captcha_image, input_result_captcha,
                       submit_find_by, value_submit, result_captcha_by, value_result_captcha, retry_max, delay_time_skip,
                       check_num=False, callback=None, callback_args=None, form_btn_handle="submit",
-                      not_errol_captcha=False):
+                      not_errol_captcha=False, reload_portal=False):
         retry = 0
         while retry < retry_max:
             logging.info(f'{name}: Enter captcha')
@@ -104,6 +104,10 @@ class UtilRpa:
                     retry += 1
                     if callback is not None:
                         callback(*callback_args)
+
+                    if reload_portal:
+                        browser.refresh()
+                        time.sleep(1)
                 except Exception as e:
                     break
             else:
@@ -114,6 +118,10 @@ class UtilRpa:
                     retry += 1
                     if callback is not None:
                         callback(*callback_args)
+
+                    if reload_portal:
+                        browser.refresh()
+                        time.sleep(1)
 
     @staticmethod
     def extract_zip_files_and_keep_specific_files(directory_path):
