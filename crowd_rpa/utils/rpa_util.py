@@ -51,7 +51,8 @@ class UtilRpa:
     @staticmethod
     def enter_captcha(name, browser, captcha_find_by, input_result_captcha_by, captcha_image, input_result_captcha,
                       submit_find_by, value_submit, result_captcha_by, value_result_captcha, retry_max, delay_time_skip,
-                      check_num=False, callback=None, callback_args=None, form_btn_handle="submit"):
+                      check_num=False, callback=None, callback_args=None, form_btn_handle="submit",
+                      not_errol_captcha=False):
         retry = 0
         while retry < retry_max:
             logging.info(f'{name}: Enter captcha')
@@ -97,13 +98,22 @@ class UtilRpa:
             logging.info(f'{name}: Please wait .. ({delay_time_skip}s)')
             time.sleep(delay_time_skip)
             # Check error captcha
-            try:
-                browser.find_element(result_captcha_by, value_result_captcha)
-                retry += 1
-                if callback is not None:
-                    callback(*callback_args)
-            except Exception as e:
-                break
+            if not not_errol_captcha:
+                try:
+                    browser.find_element(result_captcha_by, value_result_captcha)
+                    retry += 1
+                    if callback is not None:
+                        callback(*callback_args)
+                except Exception as e:
+                    break
+            else:
+                try:
+                    browser.find_element(result_captcha_by, value_result_captcha)
+                    break
+                except Exception as e:
+                    retry += 1
+                    if callback is not None:
+                        callback(*callback_args)
 
     @staticmethod
     def extract_zip_files_and_keep_specific_files(directory_path):
