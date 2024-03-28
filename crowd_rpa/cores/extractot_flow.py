@@ -20,9 +20,9 @@ class ExtractorFlow:
 
     def infer_flow(self, meta_data: dict):
         for meta in meta_data['data'].copy():
-            status = meta_data['data'][meta]['steps'][-1]
+            status = meta_data['data'][meta]['status']
             if status == CollectorStatus.SUBMITTED.value:
-                xml_pth = glob.glob(rf"{meta_data['data'][meta]['steps'][2]}/*.xml")
+                xml_pth = glob.glob(rf"{meta_data['data'][meta]['steps'][3]}/*.xml")
                 item = deepcopy(self._ITEM)
                 if len(xml_pth) > 0:
                     xml_pth = xml_pth[0]

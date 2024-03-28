@@ -38,7 +38,8 @@ class Config:
         r' Mã số tra cứu: \s*([A-Z0-9]+)',
         r'mã tra cứu: \s*([A-Z0-9]+)',
         r'Chuỗi xác thực \(Digest Value\): (.+)',
-        r'MTC: ([A-F0-9]+)'
+        r'MTC: ([A-F0-9]+)',
+        r'Mã tra cứu:\s*([A-Z0-9]+)'
     ]
     COMPANY_PATTERNS = [
         r'mã công ty: \s*([A-Z0-9]+)',

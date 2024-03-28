@@ -21,10 +21,19 @@ def find_links_in_pdf(pdf_path):
             if len(link) > 0:
                 out_box[4] = max(link, key=lambda x: len(x))
                 links += [out_box]
+            else:
+                url_pattern = r'website:\s*([^\s]+)\s*'
+                matches = re.search(url_pattern, tbox[4])
+                if matches:
+                    out_box[4] = matches.group(1)
+                    links += [out_box]
 
     doc.close()
     link = max(links, key=lambda x: x[3])
-    return extract_base_url(link[4])
+    url = link[4]
+    if 'http' in url:
+        return extract_base_url(url)
+    return f'https://{url}'
 
 
 def find_lookup_code_in_pdf(pdf_path):
@@ -118,4 +127,4 @@ def extract_base_url(url):
 
 
 if __name__ == '__main__':
-    print(find_links_in_pdf(r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\data1\misa.pdf'))
+    print(find_lookup_code_in_pdf(r'C:\Users\phduo\PycharmProjects\master_tools\velociti-be\crowd_rpa\tests\data1\Gas Petrolimex.pdf'))
